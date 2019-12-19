@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-65:12
+ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-65:12
 MERGED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:2:1-108:12
 MERGED from [:Hardware-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\cf8450475982aaa503b5a6a6b2886e0f\Hardware-release\AndroidManifest.xml:2:1-11:12
 MERGED from [:FtcCommon-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\a61982c58efad1a027dce87ca57beccf\FtcCommon-release\AndroidManifest.xml:3:1-235:12
@@ -18,27 +18,27 @@ MERGED from [:OnBotJava-release:] C:\Users\user\.gradle\caches\transforms-2\file
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\user\.gradle\caches\transforms-2\files-2.1\ccf94a4f227dfa4f17156620e28a8b98\support-compat-28.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\user\.gradle\caches\transforms-2\files-2.1\ec51a15ecdd6ac6bc414bac2bbd5ef52\versionedparcelable-28.0.0\AndroidManifest.xml:17:1-25:12
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\user\.gradle\caches\transforms-2\files-2.1\f8071bc478da969c504fd95a5be6aaf8\runtime-1.1.1\AndroidManifest.xml:17:1-22:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
 	package
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:9:5-45
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:9:5-45
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:10:5-63
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:10:5-63
 application
-ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:11:5-19
-MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-63:19
-MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-63:19
+ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:11:5-19
+MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-63:19
+MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-63:19
 MERGED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:78:5-106:19
 MERGED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:78:5-106:19
 MERGED from [:FtcCommon-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\a61982c58efad1a027dce87ca57beccf\FtcCommon-release\AndroidManifest.xml:23:5-233:19
@@ -56,23 +56,23 @@ MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\user\.grad
 	android:appComponentFactory
 		ADDED from [com.android.support:support-compat:28.0.0] C:\Users\user\.gradle\caches\transforms-2\files-2.1\ccf94a4f227dfa4f17156620e28a8b98\support-compat-28.0.0\AndroidManifest.xml:22:18-91
 	android:label
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-41
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-41
 	android:largeHeap
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-33
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-33
 	android:icon
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-45
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-45
 	android:allowBackup
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:9-35
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-45
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-45
 	android:name
 		ADDED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:78:18-97
 uses-sdk
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-10:41
-MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-10:41
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-10:41
+MERGED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-10:41
 MERGED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:7:5-9:41
 MERGED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:7:5-9:41
 MERGED from [:Hardware-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\cf8450475982aaa503b5a6a6b2886e0f\Hardware-release\AndroidManifest.xml:7:5-9:41
@@ -97,84 +97,84 @@ MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\user\.grad
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\user\.gradle\caches\transforms-2\files-2.1\ec51a15ecdd6ac6bc414bac2bbd5ef52\versionedparcelable-28.0.0\AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\user\.gradle\caches\transforms-2\files-2.1\f8071bc478da969c504fd95a5be6aaf8\runtime-1.1.1\AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\user\.gradle\caches\transforms-2\files-2.1\f8071bc478da969c504fd95a5be6aaf8\runtime-1.1.1\AndroidManifest.xml:20:5-44
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		ADDED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		ADDED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-81
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-81
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-78
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-78
 meta-data#org.firstinspires.latestSupportedControlHubVersion
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:9-24:33
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:9-24:33
 	android:value
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-30
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-30
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-78
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-78
 activity#org.firstinspires.ftc.robotcontroller.internal.PermissionValidatorWrapper
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:9-38:20
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:9-38:20
 	android:screenOrientation
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:13-49
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:13-49
 	android:label
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:13-45
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:13-45
 	android:launchMode
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-44
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-44
 	android:configChanges
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:13-59
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:13-59
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-101
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-101
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:13-37:29
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:13-37:29
 category#android.intent.category.LAUNCHER
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:17-77
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:17-77
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:27-74
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:27-74
 action#android.intent.action.MAIN
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:17-69
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:17-69
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:25-66
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:25-66
 activity#org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:9-57:20
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:9-57:20
 	android:screenOrientation
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:13-49
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:13-49
 	android:label
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:42:13-45
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:42:13-45
 	android:launchMode
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:13-44
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:13-44
 	android:configChanges
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:41:13-59
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:41:13-59
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:13-101
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:13-101
 intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_ATTACHED
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:45:13-47:29
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:45:13-47:29
 action#android.hardware.usb.action.USB_DEVICE_ATTACHED
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:46:17-90
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:46:17-90
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:46:25-87
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:46:25-87
 meta-data#android.hardware.usb.action.USB_DEVICE_ATTACHED
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:49:13-51:57
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:49:13-51:57
 	android:resource
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:51:17-54
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:51:17-54
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:50:17-79
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:50:17-79
 meta-data#org.firstinspires.main.entry
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:54:13-56:40
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:54:13-56:40
 	android:value
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:56:17-37
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:56:17-37
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:55:17-60
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:55:17-60
 service#com.qualcomm.ftccommon.FtcRobotControllerService
-ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:60:9-62:38
+ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:60:9-62:38
 	android:enabled
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:62:13-35
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:62:13-35
 	android:name
-		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\16596-robot-code-2020-\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:61:13-76
+		ADDED from [:FtcRobotController] C:\Users\user\Documents\GitHub\SkyStone\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:61:13-76
 uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from [:RobotCore-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\5271bee21e16531bdf933a743d87e4e5\RobotCore-release\AndroidManifest.xml:11:5-13:35
 MERGED from [:FtcCommon-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\a61982c58efad1a027dce87ca57beccf\FtcCommon-release\AndroidManifest.xml:12:5-76
@@ -670,7 +670,7 @@ ADDED from [:FtcCommon-release:] C:\Users\user\.gradle\caches\transforms-2\files
 	android:name
 		ADDED from [:FtcCommon-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\a61982c58efad1a027dce87ca57beccf\FtcCommon-release\AndroidManifest.xml:231:13-102
 uses-permission#android.permission.READ_PHONE_STATE
-IMPLIED from C:\Users\user\Documents\GitHub\16596-robot-code-2020-\TeamCode\src\main\AndroidManifest.xml:8:1-12:12 reason: org.tensorflow.lite has a targetSdkVersion < 4
+IMPLIED from C:\Users\user\Documents\GitHub\SkyStone\TeamCode\src\main\AndroidManifest.xml:8:1-12:12 reason: org.tensorflow.lite has a targetSdkVersion < 4
 uses-permission#android.permission.BLUETOOTH_ADMIN
 ADDED from [:Inspection-release:] C:\Users\user\.gradle\caches\transforms-2\files-2.1\2fe8b4c69f953c5a270b9f92f899542f\Inspection-release\AndroidManifest.xml:12:5-74
 	android:name

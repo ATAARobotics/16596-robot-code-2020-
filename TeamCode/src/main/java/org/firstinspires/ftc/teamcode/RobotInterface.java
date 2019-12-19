@@ -1,22 +1,33 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import static java.lang.Thread.sleep;
 
 public class RobotInterface {
 
+    private ElapsedTime runtime = new ElapsedTime();
 
     private boolean armSwitch = false;
     private boolean clawSwitch = false;
     private boolean extenderSwitch = false;
-    private boolean colorSensorSwitch = false;
+    private boolean colorSensorSwitch = true;
     private boolean toothSwitch = false;
 
     private DcMotor leftDrive = null;
@@ -30,22 +41,29 @@ public class RobotInterface {
     private ColorSensor colorSensor = null;
     private AnalogInput armPotentiometer = null;
     private Servo tooth = null;
+    private DistanceSensor distanceSensor = null;
+
+    BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double globalAngle;
+    double correction;
 
     private double maxDriveSpeed = 0.4;
     private double maxStrafeSpeed = 0.3;
-    private double maxArmPower = 0.6;
-    private double maxExtenderPower = 0.5;
+    private double maxArmPower = 0.262;
+    private double maxExtenderPower = 1.0;
     private double maxClawPower = 0.3;
 
-    private final int maxArmPosition = 39;
-    private final int minArmPosition = 30;
+    public final int MAX_ARM_POSITION = 80;
+    public final int MIN_ARM_POSITION = 50;
+    public final int BRIDGE_ARM_POSITION = 71;
 
-
+    private double autoMaxExtender = 0.4;
     private double maxExtender = 1.0;
     private double minExtender = 0.0;
 
-    private double clawClosed = 0.0;
-    private double clawOpen = 1.0;
+    private double clawClosed = 1.0;
+    private double clawOpen = 0.0;
     private boolean clawIsOpen = true;
 
     private double toothDeployed = 0.0;
@@ -59,17 +77,18 @@ public class RobotInterface {
     public static final double BR_TICKS_PER_INCH = 456.0/INCHES_PER_ROTATION;
     public static final double WHEEL_BASE_CIRCUMFERENCE = 3.13 * 2.25;
 
-    private final double RED_MAXIMUM = 205.0;
-    private final double RED_MINIMUM = 105.0;
-    private final double GREEN_MAXIMUM = 205.0;
-    private final double GREEN_MINIMUM = 105.0;
-    private final double BLUE_MAXIMUM = 205.0;
-    private final double BLUE_MINIMUM = 105.0;
+    private final int RED_MAXIMUM = 750;
+    private final int GREEN_MAXIMUM = 1000;
 
-    private final double FL_DRIVE_MODIFIER = 1.0;
-    private final double FR_DRIVE_MODIFIER = 1.0;
-    private final double RR_DRIVE_MODIFIER = 0.85;
+    private final int MAX_DISTANCE = 50;
+    private final int MIN_DISTANCE = 20;
+
+    private final double FL_DRIVE_MODIFIER = 0.939;
+    private final double FR_DRIVE_MODIFIER = 0.953;
+    private final double RR_DRIVE_MODIFIER = 0.965;
     private final double RL_DRIVE_MODIFIER = 1.0;
+    private final int LINE_RED = 220;
+
 
     private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
@@ -130,9 +149,14 @@ public class RobotInterface {
             armDrive = hardwareMap.get(DcMotorSimple.class, "lift");
         }
         if(extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");
-        if(clawSwitch) claw = hardwareMap.get(Servo.class, "claw");
-        if(colorSensorSwitch) colorSensor = hardwareMap.get(ColorSensor.class, "scanner");
-        if(toothSwitch) tooth =hardwareMap.get (Servo.class, "Tooth");
+        if(clawSwitch) {
+            claw = hardwareMap.get(Servo.class, "claw");
+        }
+        if(colorSensorSwitch) {
+            distanceSensor = hardwareMap.get(DistanceSensor.class, "rangefinder");
+            colorSensor = hardwareMap.get(ColorSensor.class, "scanner");
+        }
+        if(toothSwitch) tooth = hardwareMap.get (Servo.class, "Tooth");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -146,6 +170,23 @@ public class RobotInterface {
             armDrive.setPower(0.0);
         }
 
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
         if(clawSwitch) claw.setPosition(clawOpen);
     }
 
@@ -157,6 +198,12 @@ public class RobotInterface {
         drive(leftSpeed,rightSpeed,true);
     }
 
+    public void driveWithCorrection(double speed) {
+        correction = checkDirection();
+
+        drive(speed-correction, speed+correction,false);
+
+    }
     public void drive(double speed) {
         drive(speed,speed,true);
     }
@@ -169,6 +216,7 @@ public class RobotInterface {
         drive(leftSpeed,rightSpeed,leftRearSpeed,rightRearSpeed,true);
     }
     public void drive(double leftSpeed, double rightSpeed, double leftRearSpeed, double rightRearSpeed, boolean resetMode) {
+
         if(resetMode) {
             leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -190,6 +238,9 @@ public class RobotInterface {
     }
 
     public void drive(double leftSpeed, double rightSpeed, double distance) {
+        if(leftSpeed < 0.0) leftSpeed *= -1;
+        if(rightSpeed < 0.0) rightSpeed *= -1;
+
         if(distance <= 0.0) {
             leftSpeed *= -1;
             rightSpeed *= -1;
@@ -213,6 +264,14 @@ public class RobotInterface {
         drive(leftSpeed, rightSpeed,false);
 
         while(!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+            correction = checkDirection();
+
+            drive(leftSpeed-correction, rightSpeed+correction,false);
+
+            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            telemetry.addData("2 global heading", globalAngle);
+            telemetry.addData("3 correction", correction);
+
             telemetry.addData("Driving", "distance %f", distance);
             telemetry.addData("Driving", "leftDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
             telemetry.addData("Driving", "leftRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
@@ -234,20 +293,36 @@ public class RobotInterface {
 
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftDrive.setPower(frontSpeed*FL_DRIVE_MODIFIER);
-        rightRearDrive.setPower(rearSpeed);
+        rightRearDrive.setPower(rearSpeed*RR_DRIVE_MODIFIER);
+        leftRearDrive.setPower(rearSpeed*RL_DRIVE_MODIFIER);
+        rightDrive.setPower(frontSpeed*FR_DRIVE_MODIFIER);
 
         rightRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
         leftDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftRearDrive.setPower(rearSpeed);
-        rightDrive.setPower(frontSpeed);
+        leftRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
         while(!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+            correction = checkDirection();
+
+            leftDrive.setPower((frontSpeed-correction)*FL_DRIVE_MODIFIER);
+            rightRearDrive.setPower((rearSpeed+correction)*RR_DRIVE_MODIFIER);
+            leftRearDrive.setPower((rearSpeed+correction)*RL_DRIVE_MODIFIER);
+            rightDrive.setPower((frontSpeed-correction)*FR_DRIVE_MODIFIER);
+
+            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            telemetry.addData("2 global heading", globalAngle);
+            telemetry.addData("3 correction", correction);
+
             telemetry.addData("Driving", "distance %f", distance);
             telemetry.addData("Driving", "leftDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
             telemetry.addData("Driving", "leftRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
@@ -279,35 +354,37 @@ public class RobotInterface {
         drive(leftSpeed,rightSpeed,angleDistance);
     }
 
-    public void extendArm() {
+    public void extendArm() throws InterruptedException {
         extendArm(false);
     }
 
-    public void extendArm(boolean wait) {
+    public void extendArm(boolean wait) throws InterruptedException {
         if(extenderSwitch) {
             armExtender.setPosition(maxExtender);
-            while (wait && armExtender.getPosition() < maxExtender) {
-                // wait for extender if asked to
+            while (wait && armExtender.getPosition() < autoMaxExtender) {
+                sleep(500);
             }
+            if(wait) armExtender.setPosition(armExtender.getPosition());
         }
     }
 
-    public void retractArm() {
+    public void retractArm() throws InterruptedException {
         retractArm(false);
     }
-    public void retractArm(boolean wait) {
+
+    public void retractArm(boolean wait) throws InterruptedException {
         if(extenderSwitch) {
             armExtender.setPosition(minExtender);
             while (wait && armExtender.getPosition() > minExtender) {
-                // wait for extender if asked to
+                sleep(500);
             }
+            if(wait) armExtender.setPosition(armExtender.getPosition());
         }
     }
 
     public void stopExtender() {
         if(extenderSwitch) {
             armExtender.setPosition(0.5);
-            //armExtender.setPosition(armExtender.getPosition());
         }
     }
 
@@ -334,10 +411,18 @@ public class RobotInterface {
         }
     }
 
-    public void liftArm() {
+    public void liftArm() throws InterruptedException {
+        liftArm(false);
+    }
+
+    public void liftArm(boolean wait) throws InterruptedException {
         if (armSwitch) {
-            if (getCurrentArmPosition() > minArmPosition) {
+            if (getCurrentArmPosition() > MIN_ARM_POSITION) {
                 armDrive.setPower(maxArmPower);
+                while(wait && getCurrentArmPosition() > BRIDGE_ARM_POSITION) {
+                    sleep(500);
+                }
+                if(wait) stopArm();
             }
             else {
                 stopArm();
@@ -345,10 +430,17 @@ public class RobotInterface {
         }
     }
 
-    public void lowerArm() {
+    public void lowerArm() throws InterruptedException {
+        lowerArm(false);
+    }
+    public void lowerArm(boolean wait) throws InterruptedException {
         if (armSwitch) {
-            if (getCurrentArmPosition() < maxArmPosition) {
+            if (getCurrentArmPosition() < MAX_ARM_POSITION) {
                 armDrive.setPower(-maxArmPower);
+                while(wait && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
+                    sleep(500);
+                }
+                if(wait) stopArm();
             }
             else {
                 stopArm();
@@ -381,11 +473,178 @@ public class RobotInterface {
     }
 
     public boolean skyStoneFound(){
-        if (colorSensor.red() < RED_MAXIMUM && colorSensor.red() > RED_MINIMUM)&&
-                    (colorSensor.green() < GREEN_MAXIMUM && colorSensor.green() > GREEN_MINIMUM) &&
-                    (colorSensor.blue() < BLUE_MAXIMUM && colorSensor.blue() > BLUE_MINIMUM) {
+        while(getDistance() < MIN_DISTANCE) {
+            drive(0.5);
+        }
+        while(getDistance() > MAX_DISTANCE) {
+            drive(-0.5);
+        }
+        drive(0.0);
+        if ( (colorSensor.red() < RED_MAXIMUM) && (colorSensor.green() < GREEN_MAXIMUM)) {
             return (true);
         }
         return (false);
+    }
+
+    public double getDistance() {
+        return distanceSensor.getDistance(DistanceUnit.MM);
+    }
+
+    public ColorSensor getColorSensor() { return colorSensor; }
+
+    public void resetEncoders() {
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public double getEncoderDistance() {
+        double distance = 0.0;
+        distance = (leftDrive.getCurrentPosition() + rightDrive.getCurrentPosition() + leftRearDrive.getCurrentPosition() + rightRearDrive.getCurrentPosition()) / 4 ;
+        return distance;
+    }
+
+    public void driveTest(double distance) {
+        double leftTime = 0.0;
+        double rightTime = 0.0;
+        double leftRearTime = 0.0;
+        double rightRearTime = 0.0;
+
+        runtime.reset();
+
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        rightDrive.setTargetPosition((int)(distance * FR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftRearDrive.setTargetPosition((int)(distance * BL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+
+        drive(1.0, 1.0,false);
+
+        while(!AtTargetPosition(leftDrive) || !AtTargetPosition(rightRearDrive) || !AtTargetPosition(rightDrive) || !AtTargetPosition(leftRearDrive)) {
+            if(AtTargetPosition(leftRearDrive)) {
+                leftRearTime = runtime.time();
+                leftRearDrive.setPower(0.0);
+            }
+            if(AtTargetPosition(leftDrive)) {
+                leftTime = runtime.time();
+                leftDrive.setPower(0.0);
+            }
+            if(AtTargetPosition(rightRearDrive)) {
+                rightRearTime = runtime.time();
+                rightRearDrive.setPower(0.0);
+            }
+            if(AtTargetPosition(rightDrive)) {
+                rightTime = runtime.time();
+                rightDrive.setPower(0.0);
+            }
+            telemetry.addData("Run time", "%f", runtime.time());
+            telemetry.addData("Encoders", "Left Front %o, Right Front %o, Left Back %o, Right Back %o", leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition(), leftRearDrive.getCurrentPosition(), rightRearDrive.getCurrentPosition());
+            telemetry.update();
+        }
+
+        telemetry.addData("Run Times", "Left Front %f Right Front %f Left Rear %f Right Rear %f", leftTime,rightTime,leftRearTime,rightRearTime);
+        telemetry.update();
+    }
+
+    double getClawPosition() {
+        return claw.getPosition();
+    }
+
+    void strafeToLine(double speed) {
+        while (!lineDetected()) {
+            strafe(speed);
+        }
+        drive(0.0);
+    }
+
+    boolean lineDetected() {
+        telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
+        telemetry.update();
+        if(colorSensor.red() > LINE_RED) return true;
+        else return false;
+    }
+
+    boolean isGyroCalibrated() {
+        return imu.isGyroCalibrated();
+    }
+
+    String getCalibrationStatus() {
+        return imu.getCalibrationStatus().toString();
+    }
+
+    /**
+     * Get current cumulative angle rotation from last reset.
+     * @return Angle in degrees. + = left, - = right.
+     */
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    /**
+     * See if we are moving in a straight line and if not return a power correction value.
+     * @return Power adjustment, + is adjust left - is adjust right.
+     */
+    private double checkDirection()
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle, gain = .10;
+
+        angle = getAngle();
+
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
+
+    public void driveToBlock(double speed) {
+        while (distanceSensor.getDistance(DistanceUnit.MM) < MIN_DISTANCE) {
+            driveWithCorrection(-speed);
+            telemetry.addData("Sensor", "Distance %f", distanceSensor.getDistance((DistanceUnit.CM)));
+            telemetry.addData("Driving", "");
+            telemetry.update();
+        }
+        while (distanceSensor.getDistance(DistanceUnit.MM) > MAX_DISTANCE) {
+            driveWithCorrection(speed);
+            telemetry.addData("Sensor", "Distance %f", distanceSensor.getDistance((DistanceUnit.CM)));
+            telemetry.addData("Driving", "");
+            telemetry.update();
+        }
+        drive(0.0);
     }
 }
