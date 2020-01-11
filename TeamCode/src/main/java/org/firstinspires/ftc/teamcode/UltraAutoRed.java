@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Blue Foundation with Pause", group="Autonomous")
-public class AutoFoundationBluePause extends LinearOpMode {
+@Autonomous(name="UltraAutoRed", group="Autonomous")
+public class UltraAutoRed extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private RobotInterface robotui = null;
@@ -31,7 +31,7 @@ public class AutoFoundationBluePause extends LinearOpMode {
         runtime.reset();
 
         // Center on foundation
-        robotui.strafe(-0.5,9);
+        robotui.strafe(0.5,9);
 
         // backwards 32"
         robotui.drive(0.5, 0.5, -34);
@@ -48,14 +48,8 @@ public class AutoFoundationBluePause extends LinearOpMode {
         // Let go of foundation
         robotui.deployTooth();
 
-        // wait 5 seconds
-        sleep(5000);
-
         // strafe past the foundation
-
-        robotui.strafe(0.5,38);
-
-
+        robotui.strafe(-0.5,38);
 
         // back away from wall (4")
         robotui.drive(0.5,1.0,-4);
@@ -64,11 +58,22 @@ public class AutoFoundationBluePause extends LinearOpMode {
         robotui.lowerArm(1);
 
         // strafe under bridge
-        robotui.strafeToLine(0.3);
+        robotui.strafeToLine(-0.3);
 
         // Stop arm from going down
         robotui.stopArm();
+
+        // strafe to blocks
+     //   robotui.strafe(-0.3, 40);
+        // turn 180*
+        robotui.turn(90);
+        // drive to the block
+     //   robotui.driveToBlock(0.5);
+
+
         // Park under bridge
+
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

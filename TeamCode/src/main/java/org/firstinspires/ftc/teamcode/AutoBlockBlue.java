@@ -33,28 +33,26 @@ public class AutoBlockBlue extends LinearOpMode {
         robotui.driveToBlock(0.5);
 
         // extend arm
-        robotui.extendArm();
-        // lower arm
-        robotui.lowerArm(true);
-        // close claw
+        robotui.extendArm(true);
+        sleep(2000);
+        robotui.stopExtender();
+        // open claw
         robotui.openClaw();
-        // lift arm
-        robotui.liftArm(true);
-        // retract arm
-        robotui.retractArm();
+        // lower arm
+        robotui.lowerArm(2);
 
         // drive backwards 10 inches
         robotui.drive(0.5,0.5,-10.0);
 
         // strafe under the bridge
-        robotui.strafeToLine(-0.5);
-        robotui.strafe(-0.5,10.0);
+        robotui.strafeToLine(0.3);
+        robotui.strafe(0.5,10.0);
 
         // drop block
         robotui.openClaw();
 
         // strafe to park under the bridge
-        robotui.strafeToLine(0.5);
+        robotui.strafeToLine(-0.3);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

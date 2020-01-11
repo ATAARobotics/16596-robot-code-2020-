@@ -42,9 +42,12 @@ public class RobotInterface {
     private AnalogInput armPotentiometer = null;
     private Servo tooth = null;
     private DistanceSensor distanceSensor = null;
+    private Servo park = null;
+    private Servo pusher = null;
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
+    double setAngle = 0.0;
     double globalAngle;
     double correction;
 
@@ -56,7 +59,8 @@ public class RobotInterface {
 
     public final int MAX_ARM_POSITION = 80;
     public final int MIN_ARM_POSITION = 50;
-    public final int BRIDGE_ARM_POSITION = 71;
+    public final int BRIDGE_ARM_POSITION = 65;
+    public final int BLOCK_ARM_POSITION = 68;
 
     private double autoMaxExtender = 0.4;
     private double maxExtender = 1.0;
@@ -64,7 +68,7 @@ public class RobotInterface {
 
     private double clawClosed = 1.0;
     private double clawOpen = 0.0;
-    private boolean clawIsOpen = true;
+    private boolean clawIsOpen = false;
 
     private double toothDeployed = 0.0;
     private double toothRaised = 1.0;
@@ -88,6 +92,7 @@ public class RobotInterface {
     private final double RR_DRIVE_MODIFIER = 0.965;
     private final double RL_DRIVE_MODIFIER = 1.0;
     private final int LINE_RED = 220;
+    private final int LINE_BLUE = 220;
 
 
     private Telemetry telemetry = null;
@@ -158,6 +163,13 @@ public class RobotInterface {
         }
         if(toothSwitch) tooth = hardwareMap.get (Servo.class, "Tooth");
 
+        park = hardwareMap.get(Servo.class, "parking");
+        pusher = hardwareMap.get(Servo.class, "pushing");
+
+        // Set the park and pusher position so it doesn't start automatically.
+        park.setPosition(0.5);
+        pusher.setPosition(0.5);
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -187,7 +199,7 @@ public class RobotInterface {
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
-        if(clawSwitch) claw.setPosition(clawOpen);
+        if(clawSwitch) claw.setPosition(clawClosed);
     }
 
     public void drive(double leftSpeed, double rightSpeed, boolean resetMode) {
@@ -346,19 +358,18 @@ public class RobotInterface {
             rightSpeed = 1.0;
         }
 
-        double angleDistance = INCHES_PER_ROTATION*FL_TICKS_PER_INCH*ENCODER_TARGET_RATIO*((double)(angle))/(360.0*WHEEL_BASE_CIRCUMFERENCE);
-        if(angleDistance < 0) {
-            leftSpeed *= -1;
-            rightSpeed *= -1;
+        setAngle = setAngle + angle;
+        while(getAngle() <= setAngle - 5 || getAngle() >= setAngle + 5 ) {
+            drive(leftSpeed, rightSpeed);
         }
-        drive(leftSpeed,rightSpeed,angleDistance);
+        drive(0.0);
     }
 
     public void extendArm() throws InterruptedException {
         extendArm(false);
     }
 
-    public void extendArm(boolean wait) throws InterruptedException {
+    public void retractArm(boolean wait) throws InterruptedException {
         if(extenderSwitch) {
             armExtender.setPosition(maxExtender);
             while (wait && armExtender.getPosition() < autoMaxExtender) {
@@ -372,7 +383,7 @@ public class RobotInterface {
         retractArm(false);
     }
 
-    public void retractArm(boolean wait) throws InterruptedException {
+    public void extendArm(boolean wait) throws InterruptedException {
         if(extenderSwitch) {
             armExtender.setPosition(minExtender);
             while (wait && armExtender.getPosition() > minExtender) {
@@ -431,16 +442,19 @@ public class RobotInterface {
     }
 
     public void lowerArm() throws InterruptedException {
-        lowerArm(false);
+        lowerArm(0);
     }
-    public void lowerArm(boolean wait) throws InterruptedException {
+    public void lowerArm(int targetPosition) throws InterruptedException {
         if (armSwitch) {
             if (getCurrentArmPosition() < MAX_ARM_POSITION) {
                 armDrive.setPower(-maxArmPower);
-                while(wait && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
+                while(targetPosition == 1 && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
                     sleep(500);
                 }
-                if(wait) stopArm();
+                while(targetPosition == 2 && getCurrentArmPosition() < BLOCK_ARM_POSITION) {
+                    sleep(500);
+                }
+                if(targetPosition > 0) stopArm();
             }
             else {
                 stopArm();
@@ -570,7 +584,7 @@ public class RobotInterface {
     boolean lineDetected() {
         telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
         telemetry.update();
-        if(colorSensor.red() > LINE_RED) return true;
+        if(colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
         else return false;
     }
 
@@ -597,11 +611,11 @@ public class RobotInterface {
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
-        if (deltaAngle < -180)
+/*        if (deltaAngle < -180)
             deltaAngle += 360;
         else if (deltaAngle > 180)
             deltaAngle -= 360;
-
+*/
         globalAngle += deltaAngle;
 
         lastAngles = angles;
@@ -622,14 +636,15 @@ public class RobotInterface {
 
         angle = getAngle();
 
-        if (angle == 0)
+        if (angle == setAngle)
             correction = 0;             // no adjustment.
         else
             correction = -angle;        // reverse sign of angle for correction.
 
         correction = correction * gain;
 
-        return correction;
+        //return correction;
+        return Range.clip(correction,-0.2,0.2);
     }
 
     public void driveToBlock(double speed) {
@@ -647,4 +662,10 @@ public class RobotInterface {
         }
         drive(0.0);
     }
+
+    public void parker() {
+        park.setPosition(1);
+    }
+    public void blockpush(){pusher.setPosition(1);}
+    public void unblockpush(){pusher.setPosition(0);}
 }

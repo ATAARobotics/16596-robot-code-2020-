@@ -4,12 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Blue Foundation with Pause", group="Autonomous")
-public class AutoFoundationBluePause extends LinearOpMode {
+@Autonomous(name="Red Block", group="Autonomous")
+public class AutoBlockRed extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private RobotInterface robotui = null;
-    private double location = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -30,45 +29,38 @@ public class AutoFoundationBluePause extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // Center on foundation
-        robotui.strafe(-0.5,9);
+        // drive forwards until distance is correct
+        robotui.driveToBlock(0.5);
 
-        // backwards 32"
-        robotui.drive(0.5, 0.5, -34);
-
-        // Grab foundation
-        robotui.deployTooth();
-
-        // adjust for lifting wheel on tooth deploy
-        robotui.drive(0.5, 0.5, -1);
-
-        // forwards 32" (plus compensation for slipping)
-        robotui.drive(0.5,0.5,42);
-
-        // Let go of foundation
-        robotui.deployTooth();
-
-        // wait 5 seconds
-        sleep(5000);
-
-        // strafe past the foundation
-
-        robotui.strafe(0.5,38);
-
-
-
-        // back away from wall (4")
-        robotui.drive(0.5,1.0,-4);
-
+        // extend arm
+    //    robotui.extendArm(true);
+    //    sleep(2000);
+    //    robotui.stopExtender();
+        // open claw
+    //    robotui.openClaw();
         // lower arm
-        robotui.lowerArm(1);
+    //    robotui.lowerArm(2);
+        // close claw
+    //    robotui.openClaw();
+        // lift arm
+    //    robotui.liftArm(true);
 
-        // strafe under bridge
+        // block pusher
+        robotui.blockpush();
+
+        // drive backwards 10 inches
+        robotui.drive(0.5,0.5,-10.0);
+
+        // strafe under the bridge
+        robotui.strafeToLine(-0.3);
+        robotui.strafe(-0.5,10.0);
+
+        // drop block
+      //  robotui.openClaw();
+        robotui.unblockpush();
+
+        // strafe to park under the bridge
         robotui.strafeToLine(0.3);
-
-        // Stop arm from going down
-        robotui.stopArm();
-        // Park under bridge
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

@@ -77,11 +77,21 @@ public class SkyStone2Bot extends LinearOpMode {
                 } else robotui.stopArm();
             }
 
+            if (gamepad2.a) {
+                robotui.parker();
+            }
+            if (gamepad2.x) {
+                robotui.blockpush();
+            }
+            if (gamepad2.y) {
+                robotui.unblockpush();
+            }
+
             if (extenderSwitch) {
                 if (gamepad1.left_bumper) {
-                    robotui.extendArm();
-                } else if (gamepad1.right_bumper) {
                     robotui.retractArm();
+                } else if (gamepad1.right_bumper) {
+                    robotui.extendArm();
                 } else robotui.stopExtender();
             }
 
