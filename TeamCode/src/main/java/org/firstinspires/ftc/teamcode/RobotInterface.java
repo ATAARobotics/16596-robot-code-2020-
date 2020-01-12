@@ -280,17 +280,18 @@ public class RobotInterface {
 
             drive(leftSpeed-correction, rightSpeed+correction,false);
 
-            telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            telemetry.addData("2 global heading", globalAngle);
-            telemetry.addData("3 correction", correction);
+            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+//            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+//            telemetry.addData("2 global heading", globalAngle);
+//            telemetry.addData("3 correction", correction);
 
-            telemetry.addData("Driving", "distance %f", distance);
-            telemetry.addData("Driving", "leftDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
-            telemetry.addData("Driving", "leftRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
-            telemetry.addData("Driving", "rightDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
-            telemetry.addData("Driving", "rightRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
-            telemetry.addData("Power levels", "leftDrive: %f rightDrive: %f", leftDrive.getPower(), rightDrive.getPower());
-            telemetry.addData("Power levels", "leftRearDrive: %f rightRearDrive: %f", leftRearDrive.getPower(), rightRearDrive.getPower());
+            telemetry.addData("Driving", "distance %f inches", distance);
+            telemetry.addData("Driving", "leftDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
+            telemetry.addData("Driving", "leftRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
+            telemetry.addData("Driving", "rightDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
+            telemetry.addData("Driving", "rightRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
+            telemetry.addData("Power levels", "leftDrive: %.2f rightDrive: %.2f", leftDrive.getPower(), rightDrive.getPower());
+            telemetry.addData("Power levels", "leftRearDrive: %.2f rightRearDrive: %.2f", leftRearDrive.getPower(), rightRearDrive.getPower());
             telemetry.update();
         }
 
@@ -325,23 +326,24 @@ public class RobotInterface {
 
         while(!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             correction = checkDirection();
-
+            if(frontSpeed < 0.0) correction *= -1.0;
             leftDrive.setPower((frontSpeed-correction)*FL_DRIVE_MODIFIER);
             rightRearDrive.setPower((rearSpeed+correction)*RR_DRIVE_MODIFIER);
             leftRearDrive.setPower((rearSpeed+correction)*RL_DRIVE_MODIFIER);
             rightDrive.setPower((frontSpeed-correction)*FR_DRIVE_MODIFIER);
 
-            telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            telemetry.addData("2 global heading", globalAngle);
-            telemetry.addData("3 correction", correction);
+            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+//            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+//            telemetry.addData("2 global heading", globalAngle);
+//            telemetry.addData("3 correction", correction);
 
-            telemetry.addData("Driving", "distance %f", distance);
-            telemetry.addData("Driving", "leftDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
-            telemetry.addData("Driving", "leftRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
-            telemetry.addData("Driving", "rightDrive from %o to %o", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
-            telemetry.addData("Driving", "rightRearDrive from %o to %o", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
-            telemetry.addData("Power levels", "leftDrive: %f rightDrive: %f", leftDrive.getPower(), rightDrive.getPower());
-            telemetry.addData("Power levels", "leftRearDrive: %f rightRearDrive: %f", leftRearDrive.getPower(), rightRearDrive.getPower());
+            telemetry.addData("Driving", "distance %f inches", distance);
+            telemetry.addData("Power levels", "leftDrive: %.2f rightDrive: %.2f", leftDrive.getPower(), rightDrive.getPower());
+            telemetry.addData("Power levels", "leftRearDrive: %.2f rightRearDrive: %.2f", leftRearDrive.getPower(), rightRearDrive.getPower());
+            telemetry.addData("Driving", "leftDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
+            telemetry.addData("Driving", "leftRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
+            telemetry.addData("Driving", "rightDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
+            telemetry.addData("Driving", "rightRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
             telemetry.update();
         }
 
@@ -354,15 +356,29 @@ public class RobotInterface {
         double leftSpeed = 1.0;
         double rightSpeed = -1.0;
         if(angle < 0) {
-            leftSpeed = -1.0;
-            rightSpeed = 1.0;
+            leftSpeed *= -1.0;
+            rightSpeed *= -1.0;
         }
 
         setAngle = setAngle + angle;
-        while(getAngle() <= setAngle - 5 || getAngle() >= setAngle + 5 ) {
-            drive(leftSpeed, rightSpeed);
+        if(angle > 0) {
+            while(getAngle() <= setAngle - 5) {
+                telemetry.addData("Turn", "%d degrees", angle);
+                telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+                drive(leftSpeed, rightSpeed);
+                telemetry.update();
+            }
+        } else {
+            while (getAngle() >= setAngle + 5) {
+                telemetry.addData("Turn", "%d degrees", angle);
+                telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+                drive(leftSpeed, rightSpeed);
+                telemetry.update();
+            }
         }
         drive(0.0);
+        telemetry.addData("Turn complete","");
+        telemetry.update();
     }
 
     public void extendArm() throws InterruptedException {
@@ -611,11 +627,11 @@ public class RobotInterface {
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
-/*        if (deltaAngle < -180)
+        if (deltaAngle < -180)
             deltaAngle += 360;
         else if (deltaAngle > 180)
             deltaAngle -= 360;
-*/
+
         globalAngle += deltaAngle;
 
         lastAngles = angles;
