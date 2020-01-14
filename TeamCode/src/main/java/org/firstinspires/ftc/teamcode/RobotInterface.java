@@ -12,11 +12,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.teamcode.Odometry.OdometryGlobalCoordinatePosition;
 
 import static java.lang.Thread.sleep;
 
@@ -45,14 +49,14 @@ public class RobotInterface {
     private Servo park = null;
     private Servo pusher = null;
 
-    BNO055IMU imu;
-    Orientation lastAngles = new Orientation();
-    double setAngle = 0.0;
-    double globalAngle;
-    double correction;
+    public BNO055IMU imu;
+    private Orientation lastAngles = new Orientation();
+    private double setAngle = 0.0;
+    private double globalAngle;
+    private double correction;
 
-    private double maxDriveSpeed = 0.4;
-    private double maxStrafeSpeed = 0.3;
+    private double maxDriveSpeed = 0.5;
+    private double maxStrafeSpeed = 0.4;
     private double maxArmPower = 0.262;
     private double maxExtenderPower = 1.0;
     private double maxClawPower = 0.3;
@@ -94,6 +98,7 @@ public class RobotInterface {
     private final int LINE_RED = 220;
     private final int LINE_BLUE = 220;
 
+    OdometryGlobalCoordinatePosition globalPositionUpdate;
 
     private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
@@ -132,7 +137,6 @@ public class RobotInterface {
     public double getExtenderPosition() {
         return armExtender.getPosition();
     }
-
 
     RobotInterface(HardwareMap hardwareMap, Telemetry telemetry, boolean armSwitch, boolean clawSwitch, boolean extenderSwitch, boolean toothSwitch) {
         this.armSwitch = armSwitch;
@@ -196,6 +200,7 @@ public class RobotInterface {
 
         imu.initialize(parameters);
 
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 50);
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
@@ -361,23 +366,15 @@ public class RobotInterface {
         }
 
         setAngle = setAngle + angle;
-        if(angle > 0) {
-            while(getAngle() <= setAngle - 5) {
-                telemetry.addData("Turn", "%d degrees", angle);
-                telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
-                drive(leftSpeed, rightSpeed);
-                telemetry.update();
-            }
-        } else {
-            while (getAngle() >= setAngle + 5) {
-                telemetry.addData("Turn", "%d degrees", angle);
-                telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
-                drive(leftSpeed, rightSpeed);
-                telemetry.update();
-            }
+        while((getAngle() <= setAngle - 5) && (getAngle() >= setAngle + 5)) {
+            telemetry.addData("Turn", "%d degrees", angle);
+            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+            drive(leftSpeed, rightSpeed);
+            telemetry.update();
         }
+
         drive(0.0);
-        telemetry.addData("Turn complete","");
+        telemetry.addData("Turn complete","Finished!");
         telemetry.update();
     }
 
@@ -659,6 +656,7 @@ public class RobotInterface {
 
         correction = correction * gain;
 
+
         //return correction;
         return Range.clip(correction,-0.2,0.2);
     }
@@ -677,6 +675,22 @@ public class RobotInterface {
             telemetry.update();
         }
         drive(0.0);
+    }
+
+    public double getHeading() {
+        return getAngle();
+    }
+
+    public Acceleration getAcceleration() {
+        return imu.getLinearAcceleration();
+    }
+
+    public Velocity getVelocity() {
+        return imu.getVelocity();
+    }
+
+    public Position getPosition() {
+        return imu.getPosition();
     }
 
     public void parker() {
