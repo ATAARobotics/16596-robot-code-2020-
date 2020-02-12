@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Odometry;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -14,20 +13,19 @@ public class OdometryGlobalCoordinatePosition implements Runnable{
     //Thread run condition
     private boolean isRunning = true;
 
-    //Position variables used for storage and calculations
-    private double robotGlobalXCoordinatePosition = 0, robotGlobalYCoordinatePosition = 0, robotOrientationRadians = 0;
-
     //Sleep time interval (milliseconds) for the position update thread
     private int sleepTime;
 
     private RobotInterface robotui;
 
+    private int runCount = 0;
+    private final int maxSamples = 100;
+    private double[] runTimes = new double[maxSamples];
+    private Acceleration[] accelerations = new Acceleration[maxSamples];
+    private Acceleration previousAcceleration;
     private Position currentPosition;
-    private Acceleration previousAccel;
     private Position previousPosition;
     private Velocity previousVelocity;
-
-    private double previousTick;
 
     private ElapsedTime runtime;
     /**
@@ -40,34 +38,63 @@ public class OdometryGlobalCoordinatePosition implements Runnable{
         sleepTime = threadSleepDelay;
         currentPosition = new Position(DistanceUnit.MM,0.0,0.0,0.0,sleepTime);
         previousPosition = new Position(DistanceUnit.MM,0.0,0.0,0.0,sleepTime);
-        previousAccel = new Acceleration(DistanceUnit.MM, 0.0, 0.0, 0.0, sleepTime);
+        for(int i = 0; i< maxSamples; i++) {
+            accelerations[i] = new Acceleration(DistanceUnit.MM, 0.0, 0.0, 0.0, sleepTime);
+            runTimes[i] = 0.0;
+        }
+        previousAcceleration = new Acceleration(DistanceUnit.MM, 0.0, 0.0, 0.0, sleepTime);
         previousVelocity = new Velocity(DistanceUnit.MM, 0.0, 0.0, 0.0, sleepTime);
         runtime = new ElapsedTime();
-        previousTick = 0.0;
     }
 
     /**
      * Updates the global (x, y, theta) coordinate position of the robot using the odometry encoders
      */
     private void globalCoordinatePositionUpdate(){
-        Double newTick = runtime.milliseconds() - previousTick;
-        previousTick = runtime.milliseconds();
+        runCount++;
+        if(runCount >= maxSamples) {
+            runCount = 0;
+        }
+        runTimes[runCount] = runtime.milliseconds();
         double heading = robotui.getHeading();
         Acceleration newAcceleration = robotui.getAcceleration();
-        Velocity newVelocity = new Velocity(DistanceUnit.MM, ((newAcceleration.xAccel - previousAccel.xAccel) / newTick) * Math.cos(heading) + previousVelocity.xVeloc, ((newAcceleration.yAccel - previousAccel.yAccel) / newTick) * Math.sin(heading) + previousVelocity.yVeloc, (newAcceleration.zAccel - previousAccel.zAccel) / newTick + previousVelocity.zVeloc, Double.doubleToLongBits(newTick));
-        Position newDistance = new Position(DistanceUnit.MM, newVelocity.xVeloc / newTick + previousPosition.x, newVelocity.yVeloc / newTick + previousPosition.y, newVelocity.zVeloc / newTick + previousPosition.z, Double.doubleToLongBits(newTick));
+        accelerations[runCount].xAccel = newAcceleration.xAccel * Math.cos(heading) + newAcceleration.yAccel * Math.sin(heading);
+        accelerations[runCount].yAccel = newAcceleration.yAccel * Math.cos(heading) + newAcceleration.xAccel * Math.sin(heading);
+        accelerations[runCount].zAccel = newAcceleration.zAccel;
 
-        currentPosition.x = currentPosition.x + newDistance.x;
-        currentPosition.y = currentPosition.y + newDistance.y;
-        currentPosition.z = currentPosition.z + newDistance.z;
+        int previousCount = runCount + 1;
+        if(previousCount >= maxSamples) {
+            previousCount = 0;
+        }
 
-        previousVelocity.xVeloc = newVelocity.xVeloc;
-        previousVelocity.yVeloc = newVelocity.yVeloc;
-        previousVelocity.zVeloc = newVelocity.zVeloc;
+        if(previousCount <= 0) {
+            Double newTick = runTimes[runCount] - runTimes[previousCount];
+            newAcceleration.xAccel = 0.0;
+            newAcceleration.yAccel = 0.0;
+            newAcceleration.zAccel = 0.0;
+            for(int i = 0; i < maxSamples; i++) {
+                newAcceleration.xAccel += accelerations[i].xAccel;
+                newAcceleration.yAccel += accelerations[i].yAccel;
+                newAcceleration.zAccel += accelerations[i].zAccel;
+            }
+            newAcceleration.xAccel = newAcceleration.xAccel / maxSamples;
+            newAcceleration.yAccel = newAcceleration.yAccel / maxSamples;
+            newAcceleration.zAccel = newAcceleration.zAccel / maxSamples;
 
-        previousAccel.xAccel = newAcceleration.xAccel;
-        previousAccel.yAccel = newAcceleration.yAccel;
-        previousAccel.zAccel = newAcceleration.zAccel;
+            Velocity newVelocity = new Velocity(DistanceUnit.MM, newAcceleration.xAccel * newTick + previousVelocity.xVeloc,
+                                                                 newAcceleration.yAccel * newTick + previousVelocity.yVeloc,
+                                                                 newAcceleration.zAccel * newTick + previousVelocity.zVeloc,
+                                                                        Double.doubleToLongBits(newTick));
+            Position newDistance = new Position(DistanceUnit.MM, newVelocity.xVeloc * newTick + previousPosition.x, newVelocity.yVeloc * newTick + previousPosition.y, newVelocity.zVeloc * newTick + previousPosition.z, Double.doubleToLongBits(newTick));
+
+            currentPosition.x = currentPosition.x + newDistance.x;
+            currentPosition.y = currentPosition.y + newDistance.y;
+            currentPosition.z = currentPosition.z + newDistance.z;
+
+            previousVelocity.xVeloc = newVelocity.xVeloc;
+            previousVelocity.yVeloc = newVelocity.yVeloc;
+            previousVelocity.zVeloc = newVelocity.zVeloc;
+        }
     }
 
     /**
@@ -119,7 +146,7 @@ public class OdometryGlobalCoordinatePosition implements Runnable{
         while(isRunning) {
             globalCoordinatePositionUpdate();
             try {
-                Thread.sleep(sleepTime);
+                Thread.sleep(sleepTime/2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

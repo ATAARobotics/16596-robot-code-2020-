@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Blue Block", group="Autonomous")
+@Autonomous(name="Blue Block Cam", group="Autonomous")
 public class AutoBlockBlueCamera extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -45,31 +45,42 @@ public class AutoBlockBlueCamera extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        // Detect a skystoneblock and its X position, and align with it
+        //robotui.alignWithBlock();
+
+        // After moving to the X coordinate, Move to the 160 x coordinate on the phone
 
         // drive forwards until distance is correct
         robotui.driveToBlock(0.5);
 
-        // extend arm
-        robotui.extendArm(true);
-        sleep(2000);
-        robotui.stopExtender();
-        // open claw
-        robotui.openClaw();
-        // lower arm
-        robotui.lowerArm(2);
+        // block pusher
+        Thread.sleep(500);
+        robotui.blockpush();
+        Thread.sleep(500);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
 
         // drive backwards 10 inches
-        robotui.drive(0.5,0.5,-10.0);
+        robotui.drive(0.5,0.5,-16.0);
+        // lower arm
+        robotui.lowerArm(1);
 
         // strafe under the bridge
-        robotui.strafeToLine(0.3);
-        robotui.strafe(0.5,10.0);
+        robotui.turn(90);
+        //robotui.strafeToLine(-0.3);
+        //robotui.strafe(-0.5,19.0);
+        robotui.drive(0.5,0.5, 1000, true);
+        robotui.drive(0.5,0.5, 10);
 
         // drop block
-        robotui.openClaw();
+        robotui.blockpush();
 
         // strafe to park under the bridge
-        robotui.strafeToLine(-0.3);
+        robotui.drive(0.5,0.5, -10);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

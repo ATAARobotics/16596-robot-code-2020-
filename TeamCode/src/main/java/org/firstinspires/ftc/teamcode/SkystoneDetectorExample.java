@@ -19,7 +19,6 @@ import java.util.Locale;
  * Derived Work Copyright(c) 2019 DogeDevs
  */
 
-@Disabled
 @TeleOp(name = "Skystone Detector OpMode", group="DogeCV")
 
 public class SkystoneDetectorExample extends LinearOpMode {
@@ -86,6 +85,8 @@ public class SkystoneDetectorExample extends LinearOpMode {
             telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
+            telemetry.addData("FoundRectangle",skyStoneDetector.foundRectangle());
+            telemetry.addData("Detecting Stone",skyStoneDetector.isDetected());
             telemetry.update();
 
             /*

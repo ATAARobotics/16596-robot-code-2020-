@@ -49,7 +49,7 @@ public class AutoFoundationRed extends LinearOpMode {
         robotui.deployTooth();
 
         // strafe past the foundation
-        robotui.strafe(-0.5,38);
+        robotui.strafe(-0.5,34);
 
         // back away from wall (4")
         robotui.drive(0.5,1.0,-4);

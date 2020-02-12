@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Red Block", group="Autonomous")
+@Autonomous(name="Red Block Camera", group="Autonomous")
 public class AutoBlockRedCamera extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -43,36 +43,29 @@ public class AutoBlockRedCamera extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        sleep(1000);
+        // Detect a skystoneblock and its X/Y position, and align with it
+        //robotui.alignWithBlock();
+
+        // After moving to the X/Y coordinate, Move to the 160 x coordinate on the phone
 
         // drive forwards until distance is correct
         robotui.driveToBlock(0.5);
-
-        // extend arm
-    //    robotui.extendArm(true);
-    //    sleep(2000);
-    //    robotui.stopExtender();
-        // open claw
-    //    robotui.openClaw();
-        // lower arm
-    //    robotui.lowerArm(2);
-        // close claw
-    //    robotui.openClaw();
-        // lift arm
-    //    robotui.liftArm(true);
 
         // block pusher
         robotui.blockpush();
 
         // drive backwards 10 inches
         robotui.drive(0.5,0.5,-10.0);
+        // lower arm
+        robotui.lowerArm(1);
 
         // strafe under the bridge
         robotui.strafeToLine(-0.3);
-        robotui.strafe(-0.5,10.0);
+        robotui.strafe(-0.5,19.0);
 
         // drop block
-      //  robotui.openClaw();
-        robotui.unblockpush();
+        robotui.blockpush();
 
         // strafe to park under the bridge
         robotui.strafeToLine(0.3);

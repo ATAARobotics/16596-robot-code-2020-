@@ -57,7 +57,7 @@ public class AutoBlockRed extends LinearOpMode {
 
         // drop block
       //  robotui.openClaw();
-        robotui.unblockpush();
+
 
         // strafe to park under the bridge
         robotui.strafeToLine(0.3);

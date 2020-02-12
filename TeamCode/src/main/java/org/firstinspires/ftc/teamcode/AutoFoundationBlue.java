@@ -34,7 +34,7 @@ public class AutoFoundationBlue extends LinearOpMode {
         robotui.strafe(-0.5,9);
 
         // backwards 32"
-        robotui.drive(0.5, 0.5, -34);
+        robotui.drive(0.5, 0.5, -32);
 
         // Grab foundation
         robotui.deployTooth();
@@ -48,11 +48,9 @@ public class AutoFoundationBlue extends LinearOpMode {
         // Let go of foundation
         robotui.deployTooth();
 
-
-
         // strafe past the foundation
 
-        robotui.strafe(0.5,38);
+        robotui.strafe(0.5,34);
 
 
         // back away from wall (4")

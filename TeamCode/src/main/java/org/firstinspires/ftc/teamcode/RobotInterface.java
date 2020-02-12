@@ -55,7 +55,7 @@ public class RobotInterface {
     private double globalAngle;
     private double correction;
 
-    private double maxDriveSpeed = 0.5;
+    private double maxDriveSpeed = 0.4;
     private double maxStrafeSpeed = 0.4;
     private double maxArmPower = 0.262;
     private double maxExtenderPower = 1.0;
@@ -74,15 +74,19 @@ public class RobotInterface {
     private double clawOpen = 0.0;
     private boolean clawIsOpen = false;
 
+    private double pusherClosed = 1.0;
+    private double pusherOpen = 0.0;
+    private boolean pusherIsOpen = false;
+
     private double toothDeployed = 0.0;
     private double toothRaised = 1.0;
     private boolean toothIsDeployed = true;
 
     public static final double INCHES_PER_ROTATION = 9.42;
-    public static final double FL_TICKS_PER_INCH = 443.0/INCHES_PER_ROTATION;
-    public static final double FR_TICKS_PER_INCH = 453.0/INCHES_PER_ROTATION;
-    public static final double BL_TICKS_PER_INCH = 435.0/INCHES_PER_ROTATION;
-    public static final double BR_TICKS_PER_INCH = 456.0/INCHES_PER_ROTATION;
+    public static final double FL_TICKS_PER_INCH = 443.0 / INCHES_PER_ROTATION;
+    public static final double FR_TICKS_PER_INCH = 453.0 / INCHES_PER_ROTATION;
+    public static final double BL_TICKS_PER_INCH = 435.0 / INCHES_PER_ROTATION;
+    public static final double BR_TICKS_PER_INCH = 456.0 / INCHES_PER_ROTATION;
     public static final double WHEEL_BASE_CIRCUMFERENCE = 3.13 * 2.25;
 
     private final int RED_MAXIMUM = 750;
@@ -102,7 +106,7 @@ public class RobotInterface {
 
     private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
-    public static final double ENCODER_TARGET_RATIO = 2.0/3.0;
+    public static final double ENCODER_TARGET_RATIO = 2.0 / 3.0;
 
     public double getMaxDriveSpeed() {
         return maxDriveSpeed;
@@ -116,7 +120,9 @@ public class RobotInterface {
         return maxArmPower;
     }
 
-    public double getCurrentArmPower() { return armDrive.getPower(); }
+    public double getCurrentArmPower() {
+        return armDrive.getPower();
+    }
 
     public double getMaxExtenderPower() {
         return maxExtenderPower;
@@ -153,26 +159,26 @@ public class RobotInterface {
         leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_drive");
         rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
 
-        if(armSwitch) {
-            armPotentiometer = hardwareMap.get(AnalogInput.class,"poteniometer");
+        if (armSwitch) {
+            armPotentiometer = hardwareMap.get(AnalogInput.class, "poteniometer");
             armDrive = hardwareMap.get(DcMotorSimple.class, "lift");
         }
-        if(extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");
-        if(clawSwitch) {
+        if (extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");
+        if (clawSwitch) {
             claw = hardwareMap.get(Servo.class, "claw");
         }
-        if(colorSensorSwitch) {
+        if (colorSensorSwitch) {
             distanceSensor = hardwareMap.get(DistanceSensor.class, "rangefinder");
             colorSensor = hardwareMap.get(ColorSensor.class, "scanner");
         }
-        if(toothSwitch) tooth = hardwareMap.get (Servo.class, "Tooth");
+        if (toothSwitch) tooth = hardwareMap.get(Servo.class, "Tooth");
 
         park = hardwareMap.get(Servo.class, "parking");
         pusher = hardwareMap.get(Servo.class, "pushing");
 
         // Set the park and pusher position so it doesn't start automatically.
         park.setPosition(0.5);
-        pusher.setPosition(0.5);
+        pusher.setPosition(0.0);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -181,17 +187,17 @@ public class RobotInterface {
         leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
         rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        if(armSwitch) {
+        if (armSwitch) {
             armDrive.setDirection(DcMotorSimple.Direction.FORWARD);
             armDrive.setPower(0.0);
         }
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
@@ -204,61 +210,68 @@ public class RobotInterface {
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
-        if(clawSwitch) claw.setPosition(clawClosed);
+        if (clawSwitch) claw.setPosition(clawClosed);
     }
 
     public void drive(double leftSpeed, double rightSpeed, boolean resetMode) {
-        drive(leftSpeed,rightSpeed,leftSpeed,rightSpeed,resetMode);
+        drive(leftSpeed, rightSpeed, leftSpeed, rightSpeed, resetMode);
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
-        drive(leftSpeed,rightSpeed,true);
+        drive(leftSpeed, rightSpeed, true);
     }
 
     public void driveWithCorrection(double speed) {
         correction = checkDirection();
 
-        drive(speed-correction, speed+correction,false);
+        drive(speed - correction, speed + correction, false);
 
     }
+
     public void drive(double speed) {
-        drive(speed,speed,true);
+        drive(speed, speed, true);
     }
 
     public void drive(double speed, boolean resetMode) {
-        drive(speed,speed,resetMode);
+        drive(speed, speed, resetMode);
     }
 
     public void drive(double leftSpeed, double rightSpeed, double leftRearSpeed, double rightRearSpeed) {
-        drive(leftSpeed,rightSpeed,leftRearSpeed,rightRearSpeed,true);
+        drive(leftSpeed, rightSpeed, leftRearSpeed, rightRearSpeed, true);
     }
+
     public void drive(double leftSpeed, double rightSpeed, double leftRearSpeed, double rightRearSpeed, boolean resetMode) {
 
-        if(resetMode) {
+        if (resetMode) {
             leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        leftDrive.setPower(Range.clip(leftSpeed,-1 * maxDriveSpeed,maxDriveSpeed) * FL_DRIVE_MODIFIER);
-        rightDrive.setPower(Range.clip(rightSpeed,-1 * maxDriveSpeed,maxDriveSpeed) * FR_DRIVE_MODIFIER);
-        rightRearDrive.setPower(Range.clip(rightRearSpeed,-1 * maxDriveSpeed,maxDriveSpeed) * RR_DRIVE_MODIFIER);
-        leftRearDrive.setPower(Range.clip(leftRearSpeed,-1 * maxDriveSpeed,maxDriveSpeed) * RL_DRIVE_MODIFIER);
+        leftDrive.setPower(Range.clip(leftSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * FL_DRIVE_MODIFIER);
+        rightDrive.setPower(Range.clip(rightSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * FR_DRIVE_MODIFIER);
+        rightRearDrive.setPower(Range.clip(rightRearSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * RR_DRIVE_MODIFIER);
+        leftRearDrive.setPower(Range.clip(leftRearSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * RL_DRIVE_MODIFIER);
 
         telemetry.addData("Driving with ", "Front left (%.2f), right (%.2f)", leftSpeed, rightSpeed);
         telemetry.addData("Driving with ", "Rear left (%.2f), right (%.2f)", leftRearSpeed, rightRearSpeed);
     }
 
     public void strafe(double speed) {
-        drive(speed,speed,-speed,-speed);
+        drive(speed, speed, -speed, -speed);
     }
 
     public void drive(double leftSpeed, double rightSpeed, double distance) {
-        if(leftSpeed < 0.0) leftSpeed *= -1;
-        if(rightSpeed < 0.0) rightSpeed *= -1;
+        drive(leftSpeed, rightSpeed, distance, false);
+    }
 
-        if(distance <= 0.0) {
+    public void drive(double leftSpeed, double rightSpeed, double distance, boolean checkForLine) {
+
+        if (leftSpeed < 0.0) leftSpeed *= -1;
+        if (rightSpeed < 0.0) rightSpeed *= -1;
+
+        if (distance <= 0.0) {
             leftSpeed *= -1;
             rightSpeed *= -1;
         }
@@ -273,19 +286,20 @@ public class RobotInterface {
         leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        rightDrive.setTargetPosition((int)(distance * FR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        rightRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftRearDrive.setTargetPosition((int)(distance * BL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightDrive.setTargetPosition((int) (distance * FR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftRearDrive.setTargetPosition((int) (distance * BL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
-        drive(leftSpeed, rightSpeed,false);
+        drive(leftSpeed, rightSpeed, false);
 
-        while(!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+            if (checkForLine && lineDetected()) break;
             correction = checkDirection();
 
-            drive(leftSpeed-correction, rightSpeed+correction,false);
+            drive(leftSpeed - correction, rightSpeed + correction, false);
 
-            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
 //            telemetry.addData("2 global heading", globalAngle);
 //            telemetry.addData("3 correction", correction);
@@ -304,9 +318,9 @@ public class RobotInterface {
     }
 
     public void strafe(double frontSpeed, double distance) {
-        if(distance < 0.0) return;
-        if(frontSpeed < -maxDriveSpeed) frontSpeed = -maxDriveSpeed;
-        if(frontSpeed > maxDriveSpeed) frontSpeed = maxDriveSpeed;
+        if (distance < 0.0) return;
+        if (frontSpeed < -maxDriveSpeed) frontSpeed = -maxDriveSpeed;
+        if (frontSpeed > maxDriveSpeed) frontSpeed = maxDriveSpeed;
         double rearSpeed = -frontSpeed;
 
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -319,25 +333,25 @@ public class RobotInterface {
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftDrive.setPower(frontSpeed*FL_DRIVE_MODIFIER);
-        rightRearDrive.setPower(rearSpeed*RR_DRIVE_MODIFIER);
-        leftRearDrive.setPower(rearSpeed*RL_DRIVE_MODIFIER);
-        rightDrive.setPower(frontSpeed*FR_DRIVE_MODIFIER);
+        leftDrive.setPower(frontSpeed * FL_DRIVE_MODIFIER);
+        rightRearDrive.setPower(rearSpeed * RR_DRIVE_MODIFIER);
+        leftRearDrive.setPower(rearSpeed * RL_DRIVE_MODIFIER);
+        rightDrive.setPower(frontSpeed * FR_DRIVE_MODIFIER);
 
-        rightRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        rightDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
-        while(!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             correction = checkDirection();
-            if(frontSpeed < 0.0) correction *= -1.0;
-            leftDrive.setPower((frontSpeed-correction)*FL_DRIVE_MODIFIER);
-            rightRearDrive.setPower((rearSpeed+correction)*RR_DRIVE_MODIFIER);
-            leftRearDrive.setPower((rearSpeed+correction)*RL_DRIVE_MODIFIER);
-            rightDrive.setPower((frontSpeed-correction)*FR_DRIVE_MODIFIER);
+            if (frontSpeed < 0.0) correction *= -1.0;
+            leftDrive.setPower((frontSpeed - correction) * FL_DRIVE_MODIFIER);
+            rightRearDrive.setPower((rearSpeed + correction) * RR_DRIVE_MODIFIER);
+            leftRearDrive.setPower((rearSpeed + correction) * RL_DRIVE_MODIFIER);
+            rightDrive.setPower((frontSpeed - correction) * FR_DRIVE_MODIFIER);
 
-            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
 //            telemetry.addData("2 global heading", globalAngle);
 //            telemetry.addData("3 correction", correction);
@@ -352,43 +366,49 @@ public class RobotInterface {
             telemetry.update();
         }
 
-        drive(0.0,0.0);
+        drive(0.0, 0.0);
         telemetry.addData("Finished Strafe", "Strafe Completed");
         telemetry.update();
     }
 
     public void turn(int angle) {
-        double leftSpeed = 1.0;
-        double rightSpeed = -1.0;
-        if(angle < 0) {
+//        if(angle > 0) turnRight(angle,5.0);
+ //       else {
+            turnLeft(angle, 15.0);
+ //       }
+
+        /*        double leftSpeed = 0.3;
+        double rightSpeed = -0.3;
+        if (angle < 0) {
             leftSpeed *= -1.0;
             rightSpeed *= -1.0;
         }
 
         setAngle = setAngle + angle;
-        while((getAngle() <= setAngle - 5) && (getAngle() >= setAngle + 5)) {
+        while ((getAngle() <= setAngle - 10) || (getAngle() >= setAngle + 10)) {
             telemetry.addData("Turn", "%d degrees", angle);
-            telemetry.addData("IMU", "imu heading: %.2f, globalHeading %.2f, correction %.2f ",lastAngles.firstAngle);
+            telemetry.addData("SetAngle", "%f degrees", setAngle);
+            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
             drive(leftSpeed, rightSpeed);
             telemetry.update();
         }
 
         drive(0.0);
-        telemetry.addData("Turn complete","Finished!");
+        telemetry.addData("Turn complete", "Finished!");
         telemetry.update();
-    }
+*/    }
 
     public void extendArm() throws InterruptedException {
         extendArm(false);
     }
 
     public void retractArm(boolean wait) throws InterruptedException {
-        if(extenderSwitch) {
+        if (extenderSwitch) {
             armExtender.setPosition(maxExtender);
             while (wait && armExtender.getPosition() < autoMaxExtender) {
                 sleep(500);
             }
-            if(wait) armExtender.setPosition(armExtender.getPosition());
+            if (wait) armExtender.setPosition(armExtender.getPosition());
         }
     }
 
@@ -397,23 +417,23 @@ public class RobotInterface {
     }
 
     public void extendArm(boolean wait) throws InterruptedException {
-        if(extenderSwitch) {
+        if (extenderSwitch) {
             armExtender.setPosition(minExtender);
             while (wait && armExtender.getPosition() > minExtender) {
                 sleep(500);
             }
-            if(wait) armExtender.setPosition(armExtender.getPosition());
+            if (wait) armExtender.setPosition(armExtender.getPosition());
         }
     }
 
     public void stopExtender() {
-        if(extenderSwitch) {
+        if (extenderSwitch) {
             armExtender.setPosition(0.5);
         }
     }
 
     public void openClaw() {
-        if(clawSwitch) {
+        if (clawSwitch) {
             clawIsOpen = !clawIsOpen;
             if (clawIsOpen) {
                 claw.setPosition(clawOpen);
@@ -425,7 +445,7 @@ public class RobotInterface {
 
 
     public void deployTooth() {
-        if(toothSwitch) {
+        if (toothSwitch) {
             toothIsDeployed = !toothIsDeployed;
             if (toothIsDeployed) {
                 tooth.setPosition(toothDeployed);
@@ -443,12 +463,11 @@ public class RobotInterface {
         if (armSwitch) {
             if (getCurrentArmPosition() > MIN_ARM_POSITION) {
                 armDrive.setPower(maxArmPower);
-                while(wait && getCurrentArmPosition() > BRIDGE_ARM_POSITION) {
+                while (wait && getCurrentArmPosition() > BRIDGE_ARM_POSITION) {
                     sleep(500);
                 }
-                if(wait) stopArm();
-            }
-            else {
+                if (wait) stopArm();
+            } else {
                 stopArm();
             }
         }
@@ -457,19 +476,19 @@ public class RobotInterface {
     public void lowerArm() throws InterruptedException {
         lowerArm(0);
     }
+
     public void lowerArm(int targetPosition) throws InterruptedException {
         if (armSwitch) {
             if (getCurrentArmPosition() < MAX_ARM_POSITION) {
                 armDrive.setPower(-maxArmPower);
-                while(targetPosition == 1 && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
+                while (targetPosition == 1 && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
                     sleep(500);
                 }
-                while(targetPosition == 2 && getCurrentArmPosition() < BLOCK_ARM_POSITION) {
+                while (targetPosition == 2 && getCurrentArmPosition() < BLOCK_ARM_POSITION) {
                     sleep(500);
                 }
-                if(targetPosition > 0) stopArm();
-            }
-            else {
+                if (targetPosition > 0) stopArm();
+            } else {
                 stopArm();
             }
         }
@@ -482,32 +501,34 @@ public class RobotInterface {
     }
 
     private boolean AtTargetPosition(DcMotor drive) {
-        if((drive.getCurrentPosition() < drive.getTargetPosition() + DRIVE_ENCODER_ERROR) && (drive.getCurrentPosition() > drive.getTargetPosition() - DRIVE_ENCODER_ERROR)) return true;
+        if ((Math.abs(drive.getCurrentPosition()) > Math.abs(drive.getTargetPosition()) + DRIVE_ENCODER_ERROR))
+            return true;
         return false;
     }
 
-    public int getCurrentArmPosition () {
+    public int getCurrentArmPosition() {
         double maxResult = armPotentiometer.getMaxVoltage();
         double result = armPotentiometer.getVoltage();
-        return (int)(100*result / maxResult);
+        return (int) (100 * result / maxResult);
     }
 
-    public void sensorStart(){
+    public void sensorStart() {
         colorSensor.enableLed(true);
     }
-    public void sensorStop(){
+
+    public void sensorStop() {
         colorSensor.enableLed(false);
     }
 
-    public boolean skyStoneFound(){
-        while(getDistance() < MIN_DISTANCE) {
+    public boolean skyStoneFound() {
+        while (getDistance() < MIN_DISTANCE) {
             drive(0.5);
         }
-        while(getDistance() > MAX_DISTANCE) {
+        while (getDistance() > MAX_DISTANCE) {
             drive(-0.5);
         }
         drive(0.0);
-        if ( (colorSensor.red() < RED_MAXIMUM) && (colorSensor.green() < GREEN_MAXIMUM)) {
+        if ((colorSensor.red() < RED_MAXIMUM) && (colorSensor.green() < GREEN_MAXIMUM)) {
             return (true);
         }
         return (false);
@@ -517,7 +538,9 @@ public class RobotInterface {
         return distanceSensor.getDistance(DistanceUnit.MM);
     }
 
-    public ColorSensor getColorSensor() { return colorSensor; }
+    public ColorSensor getColorSensor() {
+        return colorSensor;
+    }
 
     public void resetEncoders() {
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -528,7 +551,7 @@ public class RobotInterface {
 
     public double getEncoderDistance() {
         double distance = 0.0;
-        distance = (leftDrive.getCurrentPosition() + rightDrive.getCurrentPosition() + leftRearDrive.getCurrentPosition() + rightRearDrive.getCurrentPosition()) / 4 ;
+        distance = (leftDrive.getCurrentPosition() + rightDrive.getCurrentPosition() + leftRearDrive.getCurrentPosition() + rightRearDrive.getCurrentPosition()) / 4;
         return distance;
     }
 
@@ -550,27 +573,27 @@ public class RobotInterface {
         leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        rightDrive.setTargetPosition((int)(distance * FR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftDrive.setTargetPosition((int)(distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        rightRearDrive.setTargetPosition((int)(distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
-        leftRearDrive.setTargetPosition((int)(distance * BL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightDrive.setTargetPosition((int) (distance * FR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        rightRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
+        leftRearDrive.setTargetPosition((int) (distance * BL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
-        drive(1.0, 1.0,false);
+        drive(1.0, 1.0, false);
 
-        while(!AtTargetPosition(leftDrive) || !AtTargetPosition(rightRearDrive) || !AtTargetPosition(rightDrive) || !AtTargetPosition(leftRearDrive)) {
-            if(AtTargetPosition(leftRearDrive)) {
+        while (!AtTargetPosition(leftDrive) || !AtTargetPosition(rightRearDrive) || !AtTargetPosition(rightDrive) || !AtTargetPosition(leftRearDrive)) {
+            if (AtTargetPosition(leftRearDrive)) {
                 leftRearTime = runtime.time();
                 leftRearDrive.setPower(0.0);
             }
-            if(AtTargetPosition(leftDrive)) {
+            if (AtTargetPosition(leftDrive)) {
                 leftTime = runtime.time();
                 leftDrive.setPower(0.0);
             }
-            if(AtTargetPosition(rightRearDrive)) {
+            if (AtTargetPosition(rightRearDrive)) {
                 rightRearTime = runtime.time();
                 rightRearDrive.setPower(0.0);
             }
-            if(AtTargetPosition(rightDrive)) {
+            if (AtTargetPosition(rightDrive)) {
                 rightTime = runtime.time();
                 rightDrive.setPower(0.0);
             }
@@ -579,7 +602,7 @@ public class RobotInterface {
             telemetry.update();
         }
 
-        telemetry.addData("Run Times", "Left Front %f Right Front %f Left Rear %f Right Rear %f", leftTime,rightTime,leftRearTime,rightRearTime);
+        telemetry.addData("Run Times", "Left Front %f Right Front %f Left Rear %f Right Rear %f", leftTime, rightTime, leftRearTime, rightRearTime);
         telemetry.update();
     }
 
@@ -597,7 +620,7 @@ public class RobotInterface {
     boolean lineDetected() {
         telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
         telemetry.update();
-        if(colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
+        if (colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
         else return false;
     }
 
@@ -611,10 +634,10 @@ public class RobotInterface {
 
     /**
      * Get current cumulative angle rotation from last reset.
+     *
      * @return Angle in degrees. + = left, - = right.
      */
-    private double getAngle()
-    {
+    private double getAngle() {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
         // We have to process the angle because the imu works in euler angles so the Z axis is
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
@@ -638,10 +661,10 @@ public class RobotInterface {
 
     /**
      * See if we are moving in a straight line and if not return a power correction value.
+     *
      * @return Power adjustment, + is adjust left - is adjust right.
      */
-    private double checkDirection()
-    {
+    private double checkDirection() {
         // The gain value determines how sensitive the correction is to direction changes.
         // You will have to experiment with your robot to get small smooth direction changes
         // to stay on a straight line.
@@ -658,7 +681,7 @@ public class RobotInterface {
 
 
         //return correction;
-        return Range.clip(correction,-0.2,0.2);
+        return Range.clip(correction, -0.2, 0.2);
     }
 
     public void driveToBlock(double speed) {
@@ -696,6 +719,91 @@ public class RobotInterface {
     public void parker() {
         park.setPosition(1);
     }
-    public void blockpush(){pusher.setPosition(1);}
-    public void unblockpush(){pusher.setPosition(0);}
+
+    public void blockpush() {
+        pusher.setPosition(1);
+            pusherIsOpen = !pusherIsOpen;
+            if (pusherIsOpen) {
+                pusher.setPosition(pusherClosed);
+            } else {
+                pusher.setPosition(pusherOpen);
+            }
+        }
+
+    public void turnLeft(double turnAngle, double timeoutS) {
+        try {
+            sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double speed=.5;
+        double oldDegreesLeft=turnAngle;
+        double scaledSpeed=speed;
+        double targetHeading=angles.firstAngle+turnAngle;
+        double oldAngle=angles.firstAngle;
+        if(targetHeading<-180) {targetHeading+=360;}
+        if(targetHeading>180){targetHeading-=360;}
+        double degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+        runtime.reset();
+        while(  runtime.seconds() < timeoutS &&
+                degreesLeft>1&&
+                oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
+            scaledSpeed=degreesLeft/(100+degreesLeft)*speed;
+            if(scaledSpeed>1){scaledSpeed=.1;}
+            leftRearDrive.setPower(scaledSpeed); //extra power to back wheels
+            rightRearDrive.setPower(-1*scaledSpeed); //due to extra weight
+            leftDrive.setPower(scaledSpeed);
+            rightDrive.setPower(-1*scaledSpeed);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            oldDegreesLeft=degreesLeft;
+            degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+            if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
+            oldAngle=angles.firstAngle;
+        }
+        drive(0.0); //our helper method to set all wheel motors to zero
+        try {
+            sleep(250); //small pause at end of turn
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void turnRight(double turnAngle, double timeoutS) {
+        try {
+            sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double speed=-.5;
+        double oldDegreesLeft=turnAngle;
+        double scaledSpeed=speed;
+        double targetHeading=angles.firstAngle+turnAngle;
+        double oldAngle=angles.firstAngle;
+        if(targetHeading<-180) {targetHeading+=360;}
+        if(targetHeading>180){targetHeading-=360;}
+        double degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+        runtime.reset();
+        while(  runtime.seconds() < timeoutS &&
+                degreesLeft>1&&
+                oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
+            scaledSpeed=-1*degreesLeft/(100+degreesLeft)*speed;
+            if(scaledSpeed<-1){scaledSpeed=-.1;}
+            leftRearDrive.setPower(scaledSpeed); //extra power to back wheels
+            rightRearDrive.setPower(-1*scaledSpeed); //due to extra weight
+            leftDrive.setPower(scaledSpeed);
+            rightDrive.setPower(-1*scaledSpeed);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            oldDegreesLeft=degreesLeft;
+            degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+            if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
+            oldAngle=angles.firstAngle;
+        }
+        drive(0.0); //our helper method to set all wheel motors to zero
+        try {
+            sleep(250); //small pause at end of turn
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Odometry.OdometryGlobalCoordinatePosition;
+import org.firstinspires.ftc.teamcode.RobotInterface;
 
-@TeleOp(name="SkyStone 2 Bot Rocks", group="TeleOp")
+@TeleOp(name="Dead Reckoning Test", group="TeleOp")
 
-public class SkyStone2Bot extends LinearOpMode {
+public class OdometryTesting extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private RobotInterface robotui = null;
@@ -33,12 +34,12 @@ public class SkyStone2Bot extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-/*
+
         //Create and start GlobalCoordinatePosition thread to constantly update the global coordinate positions
-        OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(robotui,75);
+        OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(robotui,5);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
-*/
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -124,26 +125,27 @@ public class SkyStone2Bot extends LinearOpMode {
             // Send calculated power to wheels
             robotui.drive(leftPower, rightPower, leftRearPower, rightRearPower);
 
+            telemetry.update();
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-//            telemetry.addData("Accel & Gyro", "%.4f : %.4f : %.4f : %.4f", robotui.getAcceleration().xAccel, robotui.getAcceleration().yAccel, robotui.getAcceleration().zAccel, robotui.getHeading());
-//            telemetry.addData("Reported Velocity", "X:%.4f Y:%.4f Z:%.4f", robotui.getVelocity().xVeloc, robotui.getVelocity().yVeloc, robotui.getVelocity().zVeloc);
-//            telemetry.addData("Reported Position", "X:%.4f Y:%.4f Z:%.4f", robotui.getPosition().x, robotui.getPosition().y, robotui.getPosition().z);
-//            telemetry.addData("Calculated Velocity", "X:%.4f Y:%.4f Z:%.4f", globalPositionUpdate.returnXSpeed(), globalPositionUpdate.returnYSpeed(), globalPositionUpdate.returnZSpeed());
-//            telemetry.addData("Calculated Position", "X:%.4f Y:%.4f Z:%.4f", globalPositionUpdate.returnXCoordinate(), globalPositionUpdate.returnYCoordinate(), globalPositionUpdate.returnZCoordinate());
-            telemetry.addData("Motors", "Front left (%.2f), Front right (%.2f), Rear left (%.2f), Rear right (%.2f)", leftPower, rightPower, leftRearPower, rightRearPower);
+            telemetry.addData("Accel & Gyro", "%.4f : %.4f : %.4f : %.4f", robotui.getAcceleration().xAccel, robotui.getAcceleration().yAccel, robotui.getAcceleration().zAccel, robotui.getHeading());
+            telemetry.addData("Reported Velocity", "X:%.4f Y:%.4f Z:%.4f", robotui.getVelocity().xVeloc, robotui.getVelocity().yVeloc, robotui.getVelocity().zVeloc);
+            telemetry.addData("Reported Position", "X:%.4f Y:%.4f Z:%.4f", robotui.getPosition().x, robotui.getPosition().y, robotui.getPosition().z);
+            telemetry.addData("Calculated Velocity", "X:%.4f Y:%.4f Z:%.4f", globalPositionUpdate.returnXSpeed(), globalPositionUpdate.returnYSpeed(), globalPositionUpdate.returnZSpeed());
+            telemetry.addData("Calculated Position", "X:%.4f Y:%.4f Z:%.4f", globalPositionUpdate.returnXCoordinate(), globalPositionUpdate.returnYCoordinate(), globalPositionUpdate.returnZCoordinate());
+/*            telemetry.addData("Motors", "Front left (%.2f), Front right (%.2f), Rear left (%.2f), Rear right (%.2f)", leftPower, rightPower, leftRearPower, rightRearPower);
             if (armSwitch)
-                telemetry.addData("Lift Motors", "liftPosition (%d) liftmax (%d) liftmin (%d) liftPower (%.2f)", robotui.getCurrentArmPosition(), robotui.MAX_ARM_POSITION, robotui.MIN_ARM_POSITION, robotui.getCurrentArmPower());
+                telemetry.addData("Lift Motors", "liftPosition (%d) liftmax (%d) liftmin (%d) liftPower (%f)", robotui.getCurrentArmPosition(), robotui.MAX_ARM_POSITION, robotui.MIN_ARM_POSITION, robotui.getCurrentArmPower());
             if (extenderSwitch)
-                telemetry.addData("Extender Servo", " extenderPosition (%.2f) ", robotui.getExtenderPosition());
+                telemetry.addData("Extender Servo", " extenderPosition (%f) ", robotui.getExtenderPosition());
             if (clawSwitch)
                 telemetry.addData("Claw", "State: " + robotui.isClawIsOpen() + " Position " + robotui.getClawPosition());
             if (toothSwitch) telemetry.addData("Tooth", "State: " + robotui.isToothDeployed());
             telemetry.addData("Color sensor", "red %d, green %d, blue %d", robotui.getColorSensor().red(), robotui.getColorSensor().green(), robotui.getColorSensor().blue());
-
+*/
             telemetry.update();
         }
 
-//        positionThread.stop();
+        positionThread.stop();
     }
 }

@@ -53,7 +53,7 @@ public class AutoFoundationRedPause extends LinearOpMode {
 
         // strafe past the foundation
 
-        robotui.strafe(-0.5,38);
+        robotui.strafe(-0.5,34);
 
 
 
