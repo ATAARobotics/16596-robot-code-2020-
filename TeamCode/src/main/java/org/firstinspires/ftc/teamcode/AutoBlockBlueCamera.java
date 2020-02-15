@@ -64,16 +64,15 @@ public class AutoBlockBlueCamera extends LinearOpMode {
         robotui.strafe(-0.5,3.0);
         robotui.strafe(0.5,3.0);
 
-        // drive backwards 10 inches
+        // drive backwards 16 inches
         robotui.drive(0.5,0.5,-16.0);
         // lower arm
         robotui.lowerArm(1);
 
-        // strafe under the bridge
-        robotui.turn(90);
-        //robotui.strafeToLine(-0.3);
-        //robotui.strafe(-0.5,19.0);
-        robotui.drive(0.5,0.5, 1000, true);
+        // turn to the bridge
+        robotui.turn(-90);
+
+        robotui.drive(0.5,0.5, 100, true);
         robotui.drive(0.5,0.5, 10);
 
         // drop block

@@ -372,10 +372,10 @@ public class RobotInterface {
     }
 
     public void turn(int angle) {
-//        if(angle > 0) turnRight(angle,5.0);
- //       else {
-            turnLeft(angle, 15.0);
- //       }
+        if(angle > 0) turnRight(angle,15.0);
+        else {
+            turnLeft(angle * -1, 15.0);
+        }
 
         /*        double leftSpeed = 0.3;
         double rightSpeed = -0.3;
@@ -736,30 +736,53 @@ public class RobotInterface {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // Get current facing from the gyro
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double speed=.5;
+
+        // the desired amount to turn by
         double oldDegreesLeft=turnAngle;
         double scaledSpeed=speed;
         double targetHeading=angles.firstAngle+turnAngle;
         double oldAngle=angles.firstAngle;
+
+        // Clamp angle value to the range -180 to 180
         if(targetHeading<-180) {targetHeading+=360;}
         if(targetHeading>180){targetHeading-=360;}
+
+
         double degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
         runtime.reset();
+        double cycleTime = runtime.seconds();
+        telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
+        telemetry.addData( "degreesLeft", "%f", degreesLeft);
+        telemetry.addData( "oldDegreesLeft", "%f", oldDegreesLeft);
+        telemetry.update();
         while(  runtime.seconds() < timeoutS &&
                 degreesLeft>1&&
                 oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
+
             scaledSpeed=degreesLeft/(100+degreesLeft)*speed;
             if(scaledSpeed>1){scaledSpeed=.1;}
-            leftRearDrive.setPower(scaledSpeed); //extra power to back wheels
-            rightRearDrive.setPower(-1*scaledSpeed); //due to extra weight
-            leftDrive.setPower(scaledSpeed);
-            rightDrive.setPower(-1*scaledSpeed);
+
+            leftRearDrive.setPower(-1*scaledSpeed); //extra power to back wheels
+            rightRearDrive.setPower(scaledSpeed); //due to extra weight
+            leftDrive.setPower(-1*scaledSpeed);
+            rightDrive.setPower(scaledSpeed);
+
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             oldDegreesLeft=degreesLeft;
             degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+
             if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
             oldAngle=angles.firstAngle;
+            telemetry.addData("Current Gyro", "%f", angles.firstAngle);
+            telemetry.addData("Target Heading", "%f", targetHeading);
+            telemetry.addData("Last cycle time", "%f", runtime.seconds() - cycleTime);
+            telemetry.update();
+            cycleTime = runtime.seconds();
+
         }
         drive(0.0); //our helper method to set all wheel motors to zero
         try {
@@ -768,7 +791,9 @@ public class RobotInterface {
             e.printStackTrace();
         }
     }
+
     public void turnRight(double turnAngle, double timeoutS) {
+        turnAngle = 360-turnAngle;
         try {
             sleep(500);
         } catch (InterruptedException e) {
@@ -776,14 +801,22 @@ public class RobotInterface {
         }
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double speed=-.5;
-        double oldDegreesLeft=turnAngle;
+        double oldDegreesLeft=360-turnAngle;
         double scaledSpeed=speed;
         double targetHeading=angles.firstAngle+turnAngle;
         double oldAngle=angles.firstAngle;
         if(targetHeading<-180) {targetHeading+=360;}
         if(targetHeading>180){targetHeading-=360;}
-        double degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+        double degreesLeft = 360-(((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2) * (360-Math.abs(angles.firstAngle-targetHeading)) + (int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading));
         runtime.reset();
+        double cycleTime = runtime.seconds();
+        telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
+        telemetry.addData( "degreesLeft", "%f", degreesLeft);
+        telemetry.addData( "oldDegreesLeft", "%f", oldDegreesLeft);
+        telemetry.addData("Current Gyro", "%f", angles.firstAngle);
+        telemetry.addData("Target Heading", "%f", targetHeading);
+        telemetry.update();
+
         while(  runtime.seconds() < timeoutS &&
                 degreesLeft>1&&
                 oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
@@ -795,9 +828,14 @@ public class RobotInterface {
             rightDrive.setPower(-1*scaledSpeed);
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             oldDegreesLeft=degreesLeft;
-            degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
+            degreesLeft = 360-(((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading));
             if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
             oldAngle=angles.firstAngle;
+            telemetry.addData("Current Gyro", "%f", angles.firstAngle);
+            telemetry.addData("Target Heading", "%f", targetHeading);
+            telemetry.addData("Last cycle time", "%f", runtime.seconds() - cycleTime);
+            telemetry.update();
+            cycleTime = runtime.seconds();
         }
         drive(0.0); //our helper method to set all wheel motors to zero
         try {
