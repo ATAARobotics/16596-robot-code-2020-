@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d11bcd53-cff7-4d72-9e20-7c1541d05104" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TurnTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCameraWall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCameraWall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueBridge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueWall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBridge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedBridge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedWall.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -13,10 +19,24 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/TeamCode.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/TeamCode.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationBlue.class" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationBlue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationBluePause.class" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationBluePause.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationRed.class" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/javac/debug/classes/org/firstinspires/ftc/teamcode/AutoFoundationRed.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/transforms/dexBuilder/debug/0/org/firstinspires/ftc/teamcode/RobotInterface.dex" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/transforms/dexBuilder/debug/0/org/firstinspires/ftc/teamcode/RobotInterface.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/build/intermediates/transforms/dexBuilder/debug/0/org/firstinspires/ftc/teamcode/SkyStone2Bot.dex" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/intermediates/transforms/dexBuilder/debug/0/org/firstinspires/ftc/teamcode/SkyStone2Bot.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build/outputs/apk/debug/TeamCode-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build/outputs/apk/debug/TeamCode-debug.apk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/TeamCode/.gradle/" />
     <ignored path="$PROJECT_DIR$/TeamCode/out/" />
@@ -40,10 +60,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-48">
-              <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
+            <state relative-caret-position="100">
+              <caret line="49" lean-forward="true" selection-end-line="96" />
             </state>
           </provider>
         </entry>
@@ -51,82 +71,83 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="887">
-              <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
+            <state relative-caret-position="1717">
+              <caret line="108" column="39" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCameraWall.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="71" column="28" lean-forward="true" selection-end-line="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedBridge.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueWall.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedWall.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="96">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotInterface.java">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="794" selection-start-line="794" selection-end-line="794" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4245#4246#0" expanded="true" />
-                <element signature="e#4281#4282#0" expanded="true" />
-                <element signature="e#4322#4323#0" expanded="true" />
-                <element signature="e#4359#4360#0" expanded="true" />
-                <element signature="e#4397#4398#0" expanded="true" />
-                <element signature="e#4431#4432#0" expanded="true" />
-                <element signature="e#4483#4484#0" expanded="true" />
-                <element signature="e#4525#4526#0" expanded="true" />
-                <element signature="e#4546#4547#0" expanded="true" />
-                <element signature="e#4585#4586#0" expanded="true" />
-                <element signature="e#4624#4625#0" expanded="true" />
-                <element signature="e#4659#4660#0" expanded="true" />
-                <element signature="e#4696#4697#0" expanded="true" />
-                <element signature="e#4729#4730#0" expanded="true" />
-                <element signature="e#4769#4770#0" expanded="true" />
-                <element signature="e#4807#4808#0" expanded="true" />
-                <element signature="e#4850#4851#0" expanded="true" />
-                <element signature="e#4898#4899#0" expanded="true" />
-                <element signature="e#8313#8314#0" expanded="true" />
-                <element signature="e#8361#8362#0" expanded="true" />
-                <element signature="e#8556#8557#0" expanded="true" />
-                <element signature="e#8595#8596#0" expanded="true" />
-                <element signature="e#8653#8654#0" expanded="true" />
-                <element signature="e#8697#8698#0" expanded="true" />
-                <element signature="e#10018#10019#0" expanded="true" />
-                <element signature="e#10066#10067#0" expanded="true" />
-                <element signature="e#20762#20763#0" expanded="true" />
-                <element signature="e#20838#20839#0" expanded="true" />
-                <element signature="e#21317#21318#0" expanded="true" />
-                <element signature="e#21394#21395#0" expanded="true" />
-                <element signature="e#24534#24535#0" expanded="true" />
-                <element signature="e#25015#25016#0" expanded="true" />
-                <element signature="e#25112#25113#0" expanded="true" />
-                <element signature="e#27678#27679#0" expanded="true" />
-                <element signature="e#27773#27774#0" expanded="true" />
-                <element signature="e#27850#27851#0" expanded="true" />
-                <element signature="e#27927#27928#0" expanded="true" />
-                <element signature="e#27990#27991#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="198">
+              <caret line="151" selection-start-line="151" selection-end-line="151" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCameraWall.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="85" selection-start-line="85" selection-end-line="85" />
+            <state relative-caret-position="85">
+              <caret line="12" column="13" selection-end-line="96" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TurnTest.java">
+        <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueBridge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="221">
+              <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
             </state>
           </provider>
         </entry>
@@ -152,6 +173,7 @@
       <find>encoder</find>
       <find>reset</find>
       <find>%.2f</find>
+      <find>strafe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -180,7 +202,6 @@
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Odometry/GlobalCoordinatePositionUpdateSample.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Odometry/OdometryCalibration.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Odometry/MyOdometryOpmode.java" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRed.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Odometry/OdometryTesting.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Odometry/OdometryGlobalCoordinatePosition.java" />
@@ -189,12 +210,19 @@
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoFoundationRedPause.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoFoundationRed.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneDetectorExample.java" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OdometryTesting.java" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TurnTest.java" />
-        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java" />
         <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotInterface.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCameraWall.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCameraWall.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedBridge.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueWall.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueBridge.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedWall.java" />
+        <option value="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java" />
       </list>
     </option>
   </component>
@@ -420,36 +448,6 @@
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.51146054" side_tool="true" weight="0.30402932" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49386993" weight="0.32967034" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.48853946" weight="0.30282637" />
-      <window_info anchor="bottom" id="Android Profiler" order="6" weight="0.32974428" />
-      <window_info anchor="bottom" id="Run" order="7" sideWeight="0.49871466" weight="0.32974428" />
-      <window_info active="true" anchor="bottom" id="SVN Repositories" order="8" weight="0.32974428" />
-      <window_info anchor="bottom" id="Debug" order="9" />
-      <window_info anchor="bottom" id="Find" order="10" weight="0.32974428" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32974428" />
-      <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" order="1" />
-      <window_info anchor="right" id="Gradle" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="right" id="Palette&#9;" order="4" />
-      <window_info active="true" anchor="right" id="Assistant" order="5" visible="true" weight="0.2838486" />
-      <window_info anchor="right" id="Hierarchy" order="6" weight="0.32969153" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info id="Capture Tool" order="1" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.29820052" />
-      <window_info id="Structure" order="3" side_tool="true" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info id="Build Variants" order="5" side_tool="true" />
-      <window_info id="Image Layers" order="6" />
-      <window_info id="Designer" order="7" />
-      <window_info id="Resources Explorer" order="8" />
-      <window_info anchor="bottom" id="Logcat" order="0" weight="0.32974428" />
-      <window_info anchor="bottom" id="TODO" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="2" />
-      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.51146054" side_tool="true" weight="0.30402932" />
-      <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49386993" weight="0.32967034" />
       <window_info anchor="bottom" id="Build" order="5" sideWeight="0.48853946" visible="true" weight="0.30282637" />
       <window_info anchor="bottom" id="Android Profiler" order="6" weight="0.32974428" />
       <window_info anchor="bottom" id="Run" order="7" sideWeight="0.49871466" weight="0.32974428" />
@@ -464,7 +462,7 @@
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info active="true" anchor="right" id="Assistant" order="5" visible="true" weight="0.2838486" />
       <window_info anchor="right" id="Hierarchy" order="6" weight="0.32969153" />
-    </layout-to-restore>
+    </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -486,6 +484,18 @@
     <MESSAGE value="Added code to integrate the DogeCV camera usage into Auto." />
     <MESSAGE value="Accidentally deleted alot of robotui&#10;Made block auto detect the line, in work for turning.&#10;Fix turbo and block detecting later." />
     <option name="LAST_COMMIT_MESSAGE" value="Accidentally deleted alot of robotui&#10;Made block auto detect the line, in work for turning.&#10;Fix turbo and block detecting later." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueBridge.java</url>
+          <line>46</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/build.common.gradle">
@@ -658,13 +668,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-799">
-          <caret line="85" column="9" selection-start-line="85" selection-start-column="9" selection-end-line="85" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/RobotCore-release-sources.jar!/com/qualcomm/robotcore/hardware/ColorSensor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -770,34 +773,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="887">
-          <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-48">
-          <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TurnTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="459">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -806,49 +785,107 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="794" selection-start-line="794" selection-end-line="794" />
+        <state relative-caret-position="299">
+          <caret line="305" column="54" selection-start-line="305" selection-start-column="54" selection-end-line="305" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4245#4246#0" expanded="true" />
-            <element signature="e#4281#4282#0" expanded="true" />
-            <element signature="e#4322#4323#0" expanded="true" />
-            <element signature="e#4359#4360#0" expanded="true" />
-            <element signature="e#4397#4398#0" expanded="true" />
-            <element signature="e#4431#4432#0" expanded="true" />
-            <element signature="e#4483#4484#0" expanded="true" />
-            <element signature="e#4525#4526#0" expanded="true" />
-            <element signature="e#4546#4547#0" expanded="true" />
-            <element signature="e#4585#4586#0" expanded="true" />
-            <element signature="e#4624#4625#0" expanded="true" />
-            <element signature="e#4659#4660#0" expanded="true" />
-            <element signature="e#4696#4697#0" expanded="true" />
-            <element signature="e#4729#4730#0" expanded="true" />
-            <element signature="e#4769#4770#0" expanded="true" />
-            <element signature="e#4807#4808#0" expanded="true" />
-            <element signature="e#4850#4851#0" expanded="true" />
-            <element signature="e#4898#4899#0" expanded="true" />
-            <element signature="e#8313#8314#0" expanded="true" />
-            <element signature="e#8361#8362#0" expanded="true" />
-            <element signature="e#8556#8557#0" expanded="true" />
-            <element signature="e#8595#8596#0" expanded="true" />
-            <element signature="e#8653#8654#0" expanded="true" />
-            <element signature="e#8697#8698#0" expanded="true" />
-            <element signature="e#10018#10019#0" expanded="true" />
-            <element signature="e#10066#10067#0" expanded="true" />
-            <element signature="e#20762#20763#0" expanded="true" />
-            <element signature="e#20838#20839#0" expanded="true" />
-            <element signature="e#21317#21318#0" expanded="true" />
-            <element signature="e#21394#21395#0" expanded="true" />
-            <element signature="e#24534#24535#0" expanded="true" />
-            <element signature="e#25015#25016#0" expanded="true" />
-            <element signature="e#25112#25113#0" expanded="true" />
-            <element signature="e#27678#27679#0" expanded="true" />
-            <element signature="e#27773#27774#0" expanded="true" />
-            <element signature="e#27850#27851#0" expanded="true" />
-            <element signature="e#27927#27928#0" expanded="true" />
-            <element signature="e#27990#27991#0" expanded="true" />
+            <element signature="e#10156#10157#0" expanded="true" />
+            <element signature="e#10207#10208#0" expanded="true" />
+            <element signature="e#13212#13213#0" expanded="true" />
+            <element signature="e#13235#13236#0" expanded="true" />
+            <element signature="e#20872#20873#0" expanded="true" />
+            <element signature="e#20948#20949#0" expanded="true" />
+            <element signature="e#21427#21428#0" expanded="true" />
+            <element signature="e#21504#21505#0" expanded="true" />
+            <element signature="e#24644#24645#0" expanded="true" />
+            <element signature="e#25133#25134#0" expanded="true" />
+            <element signature="e#25230#25231#0" expanded="true" />
+            <element signature="e#27876#27877#0" expanded="true" />
+            <element signature="e#27971#27972#0" expanded="true" />
+            <element signature="e#28048#28049#0" expanded="true" />
+            <element signature="e#28125#28126#0" expanded="true" />
+            <element signature="e#28188#28189#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkyStone2Bot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1717">
+          <caret line="108" column="39" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="39" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCamera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="49" lean-forward="true" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCamera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockRedCameraWall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="71" column="28" lean-forward="true" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoBlockBlueCameraWall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="12" column="13" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueWall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkBlueBridge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/justParkRedWall.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SkystoneIdentificationSample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="151" selection-start-line="151" selection-end-line="151" />
         </state>
       </provider>
     </entry>

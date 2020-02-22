@@ -26,6 +26,8 @@ public class SkyStone2Bot extends LinearOpMode {
         boolean previousB = false;
         boolean previousX = false;
         boolean previousBlocky = false;
+        boolean previousLeftBumper = false;
+        boolean previousRightBumper = false;
         robotui = new RobotInterface(hardwareMap, telemetry, armSwitch, clawSwitch, extenderSwitch, toothSwitch);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -115,6 +117,14 @@ public class SkyStone2Bot extends LinearOpMode {
                 }
                 previousX = gamepad1.x;
             }
+            if (gamepad1.left_bumper && previousLeftBumper) {
+                robotui.slow();
+            }
+            previousLeftBumper = gamepad1.left_bumper;
+            if (gamepad1.right_bumper && previousRightBumper) {
+                robotui.turbo();
+            }
+            previousRightBumper = gamepad1.right_bumper;
            /* if (gamepad1.right_trigger >= 0.5) {
                 robotui.turboOn();
             } else {

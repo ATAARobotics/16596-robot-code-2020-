@@ -56,6 +56,9 @@ public class RobotInterface {
     private double correction;
 
     private double maxDriveSpeed = 0.4;
+    private double normalSpeed = 0.4;
+    private double turboSpeed = 0.8;
+    private double slowSpeed = 0.25;
     private double maxStrafeSpeed = 0.4;
     private double maxArmPower = 0.262;
     private double maxExtenderPower = 1.0;
@@ -73,6 +76,9 @@ public class RobotInterface {
     private double clawClosed = 1.0;
     private double clawOpen = 0.0;
     private boolean clawIsOpen = false;
+
+    private boolean turboIsDeployed = false;
+    private boolean slowIsDeployed = false;
 
     private double pusherClosed = 1.0;
     private double pusherOpen = 0.0;
@@ -295,9 +301,9 @@ public class RobotInterface {
 
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             if (checkForLine && lineDetected()) break;
-            correction = checkDirection();
+            correction = checkDirection(0.2);
 
-            drive(leftSpeed - correction, rightSpeed + correction, false);
+            drive(leftSpeed + correction, rightSpeed - correction, false);
 
             telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
@@ -318,6 +324,10 @@ public class RobotInterface {
     }
 
     public void strafe(double frontSpeed, double distance) {
+        strafe(frontSpeed,distance,false);
+    }
+
+    public void strafe(double frontSpeed, double distance, boolean checkForLine) {
         if (distance < 0.0) return;
         if (frontSpeed < -maxDriveSpeed) frontSpeed = -maxDriveSpeed;
         if (frontSpeed > maxDriveSpeed) frontSpeed = maxDriveSpeed;
@@ -343,8 +353,8 @@ public class RobotInterface {
         leftRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
         rightDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
-        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
-            correction = checkDirection();
+        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive) && !(checkForLine && !lineDetected())) {
+            correction = checkDirection(0.2);
             if (frontSpeed < 0.0) correction *= -1.0;
             leftDrive.setPower((frontSpeed - correction) * FL_DRIVE_MODIFIER);
             rightRearDrive.setPower((rearSpeed + correction) * RR_DRIVE_MODIFIER);
@@ -376,27 +386,7 @@ public class RobotInterface {
         else {
             turnLeft(angle * -1, 15.0);
         }
-
-        /*        double leftSpeed = 0.3;
-        double rightSpeed = -0.3;
-        if (angle < 0) {
-            leftSpeed *= -1.0;
-            rightSpeed *= -1.0;
-        }
-
-        setAngle = setAngle + angle;
-        while ((getAngle() <= setAngle - 10) || (getAngle() >= setAngle + 10)) {
-            telemetry.addData("Turn", "%d degrees", angle);
-            telemetry.addData("SetAngle", "%f degrees", setAngle);
-            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
-            drive(leftSpeed, rightSpeed);
-            telemetry.update();
-        }
-
-        drive(0.0);
-        telemetry.addData("Turn complete", "Finished!");
-        telemetry.update();
-*/    }
+    }
 
     public void extendArm() throws InterruptedException {
         extendArm(false);
@@ -452,6 +442,23 @@ public class RobotInterface {
             } else {
                 tooth.setPosition(toothRaised);
             }
+        }
+    }
+
+    public void turbo() {
+        turboIsDeployed = !turboIsDeployed;
+        if (turboIsDeployed) {
+            maxDriveSpeed = turboSpeed;
+        } else {
+            maxDriveSpeed = normalSpeed;
+        }
+    }
+    public void slow() {
+        slowIsDeployed = !slowIsDeployed;
+        if (slowIsDeployed) {
+            maxDriveSpeed = slowSpeed;
+        } else {
+            maxDriveSpeed = normalSpeed;
         }
     }
 
@@ -612,7 +619,7 @@ public class RobotInterface {
 
     void strafeToLine(double speed) {
         while (!lineDetected()) {
-            strafe(speed);
+            strafe(speed,96,true);
         }
         drive(0.0);
     }
@@ -665,10 +672,14 @@ public class RobotInterface {
      * @return Power adjustment, + is adjust left - is adjust right.
      */
     private double checkDirection() {
+    return checkDirection(0.1);
+
+    }
+        private double checkDirection(double gain) {
         // The gain value determines how sensitive the correction is to direction changes.
         // You will have to experiment with your robot to get small smooth direction changes
         // to stay on a straight line.
-        double correction, angle, gain = .10;
+        double correction, angle;
 
         angle = getAngle();
 

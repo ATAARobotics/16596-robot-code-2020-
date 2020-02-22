@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Red Block Camera", group="Autonomous")
+@Autonomous(name="Red Block Camera Bridge", group="Autonomous")
 public class AutoBlockRedCamera extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -38,37 +38,54 @@ public class AutoBlockRedCamera extends LinearOpMode {
 
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("imu calib status", robotui.getCalibrationStatus());
+        telemetry.addData("Stone Position X", skyStoneDetector.getScreenPosition().x);
+        telemetry.addData("Stone Position Y", skyStoneDetector.getScreenPosition().y);
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        sleep(1000);
-        // Detect a skystoneblock and its X/Y position, and align with it
+        // Detect a skystoneblock and its X position, and align with it
         //robotui.alignWithBlock();
 
-        // After moving to the X/Y coordinate, Move to the 160 x coordinate on the phone
+
+
+        // After moving to the X coordinate, Move to the 160 x coordinate on the phone
 
         // drive forwards until distance is correct
         robotui.driveToBlock(0.5);
 
         // block pusher
+        Thread.sleep(500);
         robotui.blockpush();
+        Thread.sleep(500);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
+        robotui.strafe(-0.5,3.0);
+        robotui.strafe(0.5,3.0);
 
-        // drive backwards 10 inches
-        robotui.drive(0.5,0.5,-10.0);
+        // drive backwards 16 inches
+        robotui.drive(0.5,0.5,-16.0);
         // lower arm
         robotui.lowerArm(1);
 
-        // strafe under the bridge
-        robotui.strafeToLine(-0.3);
-        robotui.strafe(-0.5,19.0);
+        // turn to the bridge
+        robotui.turn(90);
+
+        robotui.drive(0.5,0.5, 100, true);
+        robotui.drive(0.5,0.5, 10);
 
         // drop block
         robotui.blockpush();
 
         // strafe to park under the bridge
-        robotui.strafeToLine(0.3);
+        robotui.drive(0.5,0.5, -10);
+        robotui.strafe(0.5,-2.0);
+
+
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Blue Block Cam", group="Autonomous")
+@Autonomous(name="Blue Block Cam Bridge", group="Autonomous")
 public class AutoBlockBlueCamera extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -48,6 +48,7 @@ public class AutoBlockBlueCamera extends LinearOpMode {
         // Detect a skystoneblock and its X position, and align with it
         //robotui.alignWithBlock();
 
+
         // After moving to the X coordinate, Move to the 160 x coordinate on the phone
 
         // drive forwards until distance is correct
@@ -80,6 +81,10 @@ public class AutoBlockBlueCamera extends LinearOpMode {
 
         // strafe to park under the bridge
         robotui.drive(0.5,0.5, -10);
+        robotui.strafe(0.5,2.0);
+
+
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
