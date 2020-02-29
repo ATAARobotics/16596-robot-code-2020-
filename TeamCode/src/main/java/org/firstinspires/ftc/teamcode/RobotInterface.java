@@ -301,9 +301,9 @@ public class RobotInterface {
 
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             if (checkForLine && lineDetected()) break;
-            correction = checkDirection(0.2);
+            correction = checkDirection();
 
-            drive(leftSpeed + correction, rightSpeed - correction, false);
+            drive(leftSpeed - correction, rightSpeed + correction, false);
 
             telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
