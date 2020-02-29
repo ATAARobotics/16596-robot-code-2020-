@@ -60,7 +60,9 @@ public class AutoFoundationBlue extends LinearOpMode {
         robotui.lowerArm(1);
 
         // strafe under bridge
-        robotui.strafeToLine(0.3);
+        while(!robotui.lineDetected() && opModeIsActive()) {
+            robotui.strafe(0.3);
+        }
 
         // Stop arm from going down
         robotui.stopArm();

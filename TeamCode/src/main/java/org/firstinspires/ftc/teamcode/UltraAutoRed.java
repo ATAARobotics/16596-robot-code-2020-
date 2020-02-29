@@ -58,8 +58,11 @@ public class UltraAutoRed extends LinearOpMode {
         robotui.lowerArm(1);
 
         // strafe under bridge
-        robotui.strafeToLine(-0.3);
-
+        while(!robotui.lineDetected() && opModeIsActive()) {
+            robotui.strafe(-0.3);
+        }
+        if(!opModeIsActive()) return;
+        
         // Stop arm from going down
         robotui.stopArm();
 

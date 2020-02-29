@@ -301,9 +301,9 @@ public class RobotInterface {
 
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             if (checkForLine && lineDetected()) break;
-            correction = checkDirection(0.2);
+            correction = checkDirection();
 
-            drive(leftSpeed + correction, rightSpeed - correction, false);
+            drive(leftSpeed - correction, rightSpeed + correction, false);
 
             telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
@@ -353,8 +353,8 @@ public class RobotInterface {
         leftRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
         rightDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
 
-        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive) && !(checkForLine && !lineDetected())) {
-            correction = checkDirection(0.2);
+        while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
+            correction = checkDirection();
             if (frontSpeed < 0.0) correction *= -1.0;
             leftDrive.setPower((frontSpeed - correction) * FL_DRIVE_MODIFIER);
             rightRearDrive.setPower((rearSpeed + correction) * RR_DRIVE_MODIFIER);
@@ -615,13 +615,6 @@ public class RobotInterface {
 
     double getClawPosition() {
         return claw.getPosition();
-    }
-
-    void strafeToLine(double speed) {
-        while (!lineDetected()) {
-            strafe(speed,96,true);
-        }
-        drive(0.0);
     }
 
     boolean lineDetected() {

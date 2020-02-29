@@ -45,14 +45,20 @@ public class AutoBlockBlue extends LinearOpMode {
         robotui.drive(0.5,0.5,-10.0);
 
         // strafe under the bridge
-        robotui.strafeToLine(0.3);
+        // strafe under bridge
+        while(!robotui.lineDetected() && opModeIsActive()) {
+            robotui.strafe(0.3);
+        }
+        if(!opModeIsActive()) return;
         robotui.strafe(0.5,10.0);
 
         // drop block
         robotui.openClaw();
 
         // strafe to park under the bridge
-        robotui.strafeToLine(-0.3);
+        while(!robotui.lineDetected() && opModeIsActive()) {
+            robotui.strafe(-0.3);
+        }
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
