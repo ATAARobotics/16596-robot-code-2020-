@@ -58,13 +58,14 @@ public class AutoBlockBlueCamera extends LinearOpMode {
         Thread.sleep(500);
         robotui.blockpush();
         Thread.sleep(500);
+        /*
         robotui.strafe(-0.5,3.0);
         robotui.strafe(0.5,3.0);
         robotui.strafe(-0.5,3.0);
         robotui.strafe(0.5,3.0);
         robotui.strafe(-0.5,3.0);
         robotui.strafe(0.5,3.0);
-
+        */
         // drive backwards 16 inches
         robotui.drive(0.5,0.5,-16.0);
         // lower arm

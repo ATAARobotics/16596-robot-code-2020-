@@ -109,6 +109,7 @@ public class RobotInterface {
     private final int LINE_BLUE = 220;
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
+    private double referenceAngle = 0.0;
 
     private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
@@ -217,6 +218,7 @@ public class RobotInterface {
         telemetry.update();
 
         if (clawSwitch) claw.setPosition(clawClosed);
+        referenceAngle = getAngle();
     }
 
     public void drive(double leftSpeed, double rightSpeed, boolean resetMode) {
@@ -273,7 +275,7 @@ public class RobotInterface {
     }
 
     public void drive(double leftSpeed, double rightSpeed, double distance, boolean checkForLine) {
-
+        setReferenceAngle();
         if (leftSpeed < 0.0) leftSpeed *= -1;
         if (rightSpeed < 0.0) rightSpeed *= -1;
 
@@ -321,6 +323,10 @@ public class RobotInterface {
         }
 
         drive(0.0);
+    }
+
+    private void setReferenceAngle() {
+        referenceAngle = getAngle();
     }
 
     public void strafe(double frontSpeed, double distance) {
@@ -677,9 +683,9 @@ public class RobotInterface {
         angle = getAngle();
 
         if (angle == setAngle)
-            correction = 0;             // no adjustment.
+            correction = referenceAngle;             // no adjustment.
         else
-            correction = -angle;        // reverse sign of angle for correction.
+            correction = -(angle - referenceAngle);        // reverse sign of angle for correction.
 
         correction = correction * gain;
 
