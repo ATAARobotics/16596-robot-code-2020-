@@ -685,7 +685,7 @@ public class RobotInterface {
 
 
         //return correction;
-        return Range.clip(correction, -0.2, 0.2);
+        return correction;
     }
 
     public void driveToBlock(double speed) {
