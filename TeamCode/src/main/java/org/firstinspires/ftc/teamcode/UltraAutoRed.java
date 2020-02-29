@@ -61,6 +61,7 @@ public class UltraAutoRed extends LinearOpMode {
         while(!robotui.lineDetected() && opModeIsActive()) {
             robotui.strafe(-0.3);
         }
+        robotui.drive(0.0);
         if(!opModeIsActive()) return;
         
         // Stop arm from going down

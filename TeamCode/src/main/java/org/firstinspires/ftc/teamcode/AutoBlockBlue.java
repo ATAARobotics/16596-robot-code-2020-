@@ -50,6 +50,8 @@ public class AutoBlockBlue extends LinearOpMode {
             robotui.strafe(0.3);
         }
         if(!opModeIsActive()) return;
+        robotui.drive(0.0);
+
         robotui.strafe(0.5,10.0);
 
         // drop block
@@ -59,6 +61,7 @@ public class AutoBlockBlue extends LinearOpMode {
         while(!robotui.lineDetected() && opModeIsActive()) {
             robotui.strafe(-0.3);
         }
+        robotui.drive(0.0);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

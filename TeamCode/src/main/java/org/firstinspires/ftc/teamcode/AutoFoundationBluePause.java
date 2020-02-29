@@ -67,6 +67,7 @@ public class AutoFoundationBluePause extends LinearOpMode {
         while(!robotui.lineDetected() && opModeIsActive()) {
             robotui.strafe(0.3);
         }
+        robotui.drive(0.0);
 
         // Stop arm from going down
         robotui.stopArm();
