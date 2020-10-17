@@ -20,7 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Odometry.OdometryGlobalCoordinatePosition;
+
+import OldCode2020.Odometry.OdometryGlobalCoordinatePosition;
 
 import static java.lang.Thread.sleep;
 
@@ -28,26 +29,14 @@ public class RobotInterface {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private boolean armSwitch = false;
-    private boolean clawSwitch = false;
-    private boolean extenderSwitch = false;
-    private boolean colorSensorSwitch = true;
-    private boolean toothSwitch = false;
+
 
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor rightRearDrive = null;
     private DcMotor leftRearDrive = null;
 
-    private DcMotorSimple armDrive = null;
-    private Servo armExtender = null;
-    private Servo claw = null;
-    private ColorSensor colorSensor = null;
-    private AnalogInput armPotentiometer = null;
-    private Servo tooth = null;
-    private DistanceSensor distanceSensor = null;
-    private Servo park = null;
-    private Servo pusher = null;
+
 
     public BNO055IMU imu;
     private Orientation lastAngles = new Orientation();
@@ -55,38 +44,16 @@ public class RobotInterface {
     private double globalAngle;
     private double correction;
 
-    private double maxDriveSpeed = 0.4;
-    private double normalSpeed = 0.4;
+    private double maxDriveSpeed = 1.0;
+    private double normalSpeed = 1.0;
     private double turboSpeed = 0.8;
     private double slowSpeed = 0.25;
     private double maxStrafeSpeed = 0.4;
-    private double maxArmPower = 0.262;
-    private double maxExtenderPower = 1.0;
-    private double maxClawPower = 0.3;
 
-    public final int MAX_ARM_POSITION = 80;
-    public final int MIN_ARM_POSITION = 50;
-    public final int BRIDGE_ARM_POSITION = 65;
-    public final int BLOCK_ARM_POSITION = 68;
-
-    private double autoMaxExtender = 0.4;
-    private double maxExtender = 1.0;
-    private double minExtender = 0.0;
-
-    private double clawClosed = 1.0;
-    private double clawOpen = 0.0;
-    private boolean clawIsOpen = false;
 
     private boolean turboIsDeployed = false;
     private boolean slowIsDeployed = false;
 
-    private double pusherClosed = 1.0;
-    private double pusherOpen = 0.0;
-    private boolean pusherIsOpen = false;
-
-    private double toothDeployed = 0.0;
-    private double toothRaised = 1.0;
-    private boolean toothIsDeployed = true;
 
     public static final double INCHES_PER_ROTATION = 9.42;
     public static final double FL_TICKS_PER_INCH = 443.0 / INCHES_PER_ROTATION;
@@ -98,8 +65,6 @@ public class RobotInterface {
     private final int RED_MAXIMUM = 750;
     private final int GREEN_MAXIMUM = 1000;
 
-    private final int MAX_DISTANCE = 50;
-    private final int MIN_DISTANCE = 20;
 
     private final double FL_DRIVE_MODIFIER = 0.939;
     private final double FR_DRIVE_MODIFIER = 0.953;
@@ -111,7 +76,7 @@ public class RobotInterface {
     OdometryGlobalCoordinatePosition globalPositionUpdate;
     private double referenceAngle = 0.0;
 
-    private Telemetry telemetry = null;
+ //   private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
     public static final double ENCODER_TARGET_RATIO = 2.0 / 3.0;
 
@@ -123,40 +88,8 @@ public class RobotInterface {
         return maxStrafeSpeed;
     }
 
-    public double getMaxArmPower() {
-        return maxArmPower;
-    }
+    RobotInterface(HardwareMap hardwareMap, Telemetry telemetry) {
 
-    public double getCurrentArmPower() {
-        return armDrive.getPower();
-    }
-
-    public double getMaxExtenderPower() {
-        return maxExtenderPower;
-    }
-
-    public double getMaxClawPower() {
-        return maxClawPower;
-    }
-
-    public boolean isClawIsOpen() {
-        return clawIsOpen;
-    }
-
-    public boolean isToothDeployed() {
-        return toothIsDeployed;
-    }
-
-    public double getExtenderPosition() {
-        return armExtender.getPosition();
-    }
-
-    RobotInterface(HardwareMap hardwareMap, Telemetry telemetry, boolean armSwitch, boolean clawSwitch, boolean extenderSwitch, boolean toothSwitch) {
-        this.armSwitch = armSwitch;
-        this.clawSwitch = clawSwitch;
-        this.extenderSwitch = extenderSwitch;
-        this.telemetry = telemetry;
-        this.toothSwitch = toothSwitch;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -166,26 +99,7 @@ public class RobotInterface {
         leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_drive");
         rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
 
-        if (armSwitch) {
-            armPotentiometer = hardwareMap.get(AnalogInput.class, "poteniometer");
-            armDrive = hardwareMap.get(DcMotorSimple.class, "lift");
-        }
-        if (extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");
-        if (clawSwitch) {
-            claw = hardwareMap.get(Servo.class, "claw");
-        }
-        if (colorSensorSwitch) {
-            distanceSensor = hardwareMap.get(DistanceSensor.class, "rangefinder");
-            colorSensor = hardwareMap.get(ColorSensor.class, "scanner");
-        }
-        if (toothSwitch) tooth = hardwareMap.get(Servo.class, "Tooth");
 
-        park = hardwareMap.get(Servo.class, "parking");
-        pusher = hardwareMap.get(Servo.class, "pushing");
-
-        // Set the park and pusher position so it doesn't start automatically.
-        park.setPosition(0.5);
-        pusher.setPosition(0.0);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -194,10 +108,6 @@ public class RobotInterface {
         leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
         rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        if (armSwitch) {
-            armDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            armDrive.setPower(0.0);
-        }
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -217,7 +127,6 @@ public class RobotInterface {
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
-        if (clawSwitch) claw.setPosition(clawClosed);
         referenceAngle = getAngle();
     }
 
@@ -262,8 +171,8 @@ public class RobotInterface {
         rightRearDrive.setPower(Range.clip(rightRearSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * RR_DRIVE_MODIFIER);
         leftRearDrive.setPower(Range.clip(leftRearSpeed, -1 * maxDriveSpeed, maxDriveSpeed) * RL_DRIVE_MODIFIER);
 
-        telemetry.addData("Driving with ", "Front left (%.2f), right (%.2f)", leftSpeed, rightSpeed);
-        telemetry.addData("Driving with ", "Rear left (%.2f), right (%.2f)", leftRearSpeed, rightRearSpeed);
+       // telemetry.addData("Driving with ", "Front left (%.2f), right (%.2f)", leftSpeed, rightSpeed);
+       // telemetry.addData("Driving with ", "Rear left (%.2f), right (%.2f)", leftRearSpeed, rightRearSpeed);
     }
 
     public void strafe(double speed) {
@@ -302,17 +211,17 @@ public class RobotInterface {
         drive(leftSpeed, rightSpeed, false);
 
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
-            if (checkForLine && lineDetected()) break;
+        //    if (checkForLine && lineDetected()) break;
             correction = checkDirection();
 
             drive(leftSpeed - correction, rightSpeed + correction, false);
 
-            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
+           // telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
 //            telemetry.addData("2 global heading", globalAngle);
 //            telemetry.addData("3 correction", correction);
 
-            telemetry.addData("Driving", "distance %f inches", distance);
+         /*   telemetry.addData("Driving", "distance %f inches", distance);
             telemetry.addData("Driving", "leftDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
             telemetry.addData("Driving", "leftRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
             telemetry.addData("Driving", "rightDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
@@ -320,7 +229,7 @@ public class RobotInterface {
             telemetry.addData("Power levels", "leftDrive: %.2f rightDrive: %.2f", leftDrive.getPower(), rightDrive.getPower());
             telemetry.addData("Power levels", "leftRearDrive: %.2f rightRearDrive: %.2f", leftRearDrive.getPower(), rightRearDrive.getPower());
             telemetry.update();
-        }
+        /*/ }
 
         drive(0.0);
     }
@@ -367,7 +276,7 @@ public class RobotInterface {
             leftRearDrive.setPower((rearSpeed + correction) * RL_DRIVE_MODIFIER);
             rightDrive.setPower((frontSpeed - correction) * FR_DRIVE_MODIFIER);
 
-            telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
+           /*/ telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
 //            telemetry.addData("2 global heading", globalAngle);
 //            telemetry.addData("3 correction", correction);
@@ -380,11 +289,11 @@ public class RobotInterface {
             telemetry.addData("Driving", "rightDrive from %d to %d", leftDrive.getCurrentPosition(), leftDrive.getTargetPosition());
             telemetry.addData("Driving", "rightRearDrive from %d to %d", rightRearDrive.getCurrentPosition(), rightRearDrive.getTargetPosition());
             telemetry.update();
-        }
+       /*/ }
 
         drive(0.0, 0.0);
-        telemetry.addData("Finished Strafe", "Strafe Completed");
-        telemetry.update();
+       /*/ telemetry.addData("Finished Strafe", "Strafe Completed");
+        telemetry.update(); /*/
     }
 
     public void turn(int angle) {
@@ -394,62 +303,7 @@ public class RobotInterface {
         }
     }
 
-    public void extendArm() throws InterruptedException {
-        extendArm(false);
-    }
 
-    public void retractArm(boolean wait) throws InterruptedException {
-        if (extenderSwitch) {
-            armExtender.setPosition(maxExtender);
-            while (wait && armExtender.getPosition() < autoMaxExtender) {
-                sleep(500);
-            }
-            if (wait) armExtender.setPosition(armExtender.getPosition());
-        }
-    }
-
-    public void retractArm() throws InterruptedException {
-        retractArm(false);
-    }
-
-    public void extendArm(boolean wait) throws InterruptedException {
-        if (extenderSwitch) {
-            armExtender.setPosition(minExtender);
-            while (wait && armExtender.getPosition() > minExtender) {
-                sleep(500);
-            }
-            if (wait) armExtender.setPosition(armExtender.getPosition());
-        }
-    }
-
-    public void stopExtender() {
-        if (extenderSwitch) {
-            armExtender.setPosition(0.5);
-        }
-    }
-
-    public void openClaw() {
-        if (clawSwitch) {
-            clawIsOpen = !clawIsOpen;
-            if (clawIsOpen) {
-                claw.setPosition(clawOpen);
-            } else {
-                claw.setPosition(clawClosed);
-            }
-        }
-    }
-
-
-    public void deployTooth() {
-        if (toothSwitch) {
-            toothIsDeployed = !toothIsDeployed;
-            if (toothIsDeployed) {
-                tooth.setPosition(toothDeployed);
-            } else {
-                tooth.setPosition(toothRaised);
-            }
-        }
-    }
 
     public void turbo() {
         turboIsDeployed = !turboIsDeployed;
@@ -468,50 +322,6 @@ public class RobotInterface {
         }
     }
 
-    public void liftArm() throws InterruptedException {
-        liftArm(false);
-    }
-
-    public void liftArm(boolean wait) throws InterruptedException {
-        if (armSwitch) {
-            if (getCurrentArmPosition() > MIN_ARM_POSITION) {
-                armDrive.setPower(maxArmPower);
-                while (wait && getCurrentArmPosition() > BRIDGE_ARM_POSITION) {
-                    sleep(500);
-                }
-                if (wait) stopArm();
-            } else {
-                stopArm();
-            }
-        }
-    }
-
-    public void lowerArm() throws InterruptedException {
-        lowerArm(0);
-    }
-
-    public void lowerArm(int targetPosition) throws InterruptedException {
-        if (armSwitch) {
-            if (getCurrentArmPosition() < MAX_ARM_POSITION) {
-                armDrive.setPower(-maxArmPower);
-                while (targetPosition == 1 && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
-                    sleep(500);
-                }
-                while (targetPosition == 2 && getCurrentArmPosition() < BLOCK_ARM_POSITION) {
-                    sleep(500);
-                }
-                if (targetPosition > 0) stopArm();
-            } else {
-                stopArm();
-            }
-        }
-    }
-
-    public void stopArm() {
-        if (armSwitch) {
-            armDrive.setPower(0.0);
-        }
-    }
 
     private boolean AtTargetPosition(DcMotor drive) {
         if ((Math.abs(drive.getCurrentPosition()) > Math.abs(drive.getTargetPosition()) + DRIVE_ENCODER_ERROR))
@@ -519,41 +329,14 @@ public class RobotInterface {
         return false;
     }
 
-    public int getCurrentArmPosition() {
-        double maxResult = armPotentiometer.getMaxVoltage();
-        double result = armPotentiometer.getVoltage();
-        return (int) (100 * result / maxResult);
-    }
 
-    public void sensorStart() {
-        colorSensor.enableLed(true);
-    }
+   // public double getDistance() {
+   //     return distanceSensor.getDistance(DistanceUnit.MM);
+   // }
 
-    public void sensorStop() {
-        colorSensor.enableLed(false);
-    }
-
-    public boolean skyStoneFound() {
-        while (getDistance() < MIN_DISTANCE) {
-            drive(0.5);
-        }
-        while (getDistance() > MAX_DISTANCE) {
-            drive(-0.5);
-        }
-        drive(0.0);
-        if ((colorSensor.red() < RED_MAXIMUM) && (colorSensor.green() < GREEN_MAXIMUM)) {
-            return (true);
-        }
-        return (false);
-    }
-
-    public double getDistance() {
-        return distanceSensor.getDistance(DistanceUnit.MM);
-    }
-
-    public ColorSensor getColorSensor() {
-        return colorSensor;
-    }
+  //  public ColorSensor getColorSensor() {
+     //   return colorSensor;
+   // }
 
     public void resetEncoders() {
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -610,26 +393,24 @@ public class RobotInterface {
                 rightTime = runtime.time();
                 rightDrive.setPower(0.0);
             }
-            telemetry.addData("Run time", "%f", runtime.time());
+          /*/  telemetry.addData("Run time", "%f", runtime.time());
             telemetry.addData("Encoders", "Left Front %o, Right Front %o, Left Back %o, Right Back %o", leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition(), leftRearDrive.getCurrentPosition(), rightRearDrive.getCurrentPosition());
-            telemetry.update();
+            telemetry.update(); /*/
         }
 
-        telemetry.addData("Run Times", "Left Front %f Right Front %f Left Rear %f Right Rear %f", leftTime, rightTime, leftRearTime, rightRearTime);
-        telemetry.update();
+       /*/ telemetry.addData("Run Times", "Left Front %f Right Front %f Left Rear %f Right Rear %f", leftTime, rightTime, leftRearTime, rightRearTime);
+        telemetry.update(); /*/
     }
 
-    double getClawPosition() {
-        return claw.getPosition();
-    }
 
-    boolean lineDetected() {
+
+  /*  boolean lineDetected() {
         telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
         telemetry.update();
         if (colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
         else return false;
     }
-
+*/
     boolean isGyroCalibrated() {
         return imu.isGyroCalibrated();
     }
@@ -694,21 +475,7 @@ public class RobotInterface {
         return correction;
     }
 
-    public void driveToBlock(double speed) {
-        while (distanceSensor.getDistance(DistanceUnit.MM) < MIN_DISTANCE) {
-            driveWithCorrection(-speed);
-            telemetry.addData("Sensor", "Distance %f", distanceSensor.getDistance((DistanceUnit.CM)));
-            telemetry.addData("Driving", "");
-            telemetry.update();
-        }
-        while (distanceSensor.getDistance(DistanceUnit.MM) > MAX_DISTANCE) {
-            driveWithCorrection(speed);
-            telemetry.addData("Sensor", "Distance %f", distanceSensor.getDistance((DistanceUnit.CM)));
-            telemetry.addData("Driving", "");
-            telemetry.update();
-        }
-        drive(0.0);
-    }
+
 
     public double getHeading() {
         return getAngle();
@@ -726,19 +493,9 @@ public class RobotInterface {
         return imu.getPosition();
     }
 
-    public void parker() {
-        park.setPosition(1);
-    }
 
-    public void blockpush() {
-        pusher.setPosition(1);
-            pusherIsOpen = !pusherIsOpen;
-            if (pusherIsOpen) {
-                pusher.setPosition(pusherClosed);
-            } else {
-                pusher.setPosition(pusherOpen);
-            }
-        }
+
+
 
     public void turnLeft(double turnAngle, double timeoutS) {
         try {
@@ -765,10 +522,10 @@ public class RobotInterface {
         double degreesLeft = ((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading);
         runtime.reset();
         double cycleTime = runtime.seconds();
-        telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
+        /*/ telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
         telemetry.addData( "degreesLeft", "%f", degreesLeft);
         telemetry.addData( "oldDegreesLeft", "%f", oldDegreesLeft);
-        telemetry.update();
+        telemetry.update(); /*/
         while(  runtime.seconds() < timeoutS &&
                 degreesLeft>1&&
                 oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
@@ -787,10 +544,10 @@ public class RobotInterface {
 
             if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
             oldAngle=angles.firstAngle;
-            telemetry.addData("Current Gyro", "%f", angles.firstAngle);
+            /*/ telemetry.addData("Current Gyro", "%f", angles.firstAngle);
             telemetry.addData("Target Heading", "%f", targetHeading);
             telemetry.addData("Last cycle time", "%f", runtime.seconds() - cycleTime);
-            telemetry.update();
+            telemetry.update(); /*/
             cycleTime = runtime.seconds();
 
         }
@@ -820,12 +577,12 @@ public class RobotInterface {
         double degreesLeft = 360-(((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2) * (360-Math.abs(angles.firstAngle-targetHeading)) + (int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading));
         runtime.reset();
         double cycleTime = runtime.seconds();
-        telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
+        /*/ telemetry.addData("Runtime vs timeout", "%f out of %f", runtime.seconds(), timeoutS);
         telemetry.addData( "degreesLeft", "%f", degreesLeft);
         telemetry.addData( "oldDegreesLeft", "%f", oldDegreesLeft);
         telemetry.addData("Current Gyro", "%f", angles.firstAngle);
         telemetry.addData("Target Heading", "%f", targetHeading);
-        telemetry.update();
+        telemetry.update(); /*/
 
         while(  runtime.seconds() < timeoutS &&
                 degreesLeft>1&&
@@ -841,10 +598,10 @@ public class RobotInterface {
             degreesLeft = 360-(((int)(Math.signum(angles.firstAngle-targetHeading)+1)/2)*(360-Math.abs(angles.firstAngle-targetHeading))+(int)(Math.signum(targetHeading-angles.firstAngle)+1)/2*Math.abs(angles.firstAngle-targetHeading));
             if(Math.abs(angles.firstAngle-oldAngle)<1){speed*=1.1;} //bump up speed to wheels in case robot stalls before reaching target
             oldAngle=angles.firstAngle;
-            telemetry.addData("Current Gyro", "%f", angles.firstAngle);
+           /*/  telemetry.addData("Current Gyro", "%f", angles.firstAngle);
             telemetry.addData("Target Heading", "%f", targetHeading);
             telemetry.addData("Last cycle time", "%f", runtime.seconds() - cycleTime);
-            telemetry.update();
+            telemetry.update(); /*/
             cycleTime = runtime.seconds();
         }
         drive(0.0); //our helper method to set all wheel motors to zero

@@ -16,10 +16,6 @@
         "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\drawable\\notification_tile_bg.xml"
     },
     {
-        "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_notification_action.xml.flat",
-        "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\layout\\notification_action.xml"
-    },
-    {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw_ss_fly_by.wav.flat",
         "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\45d5c5a8f2db7cb81f7a0b5164d0142a\\FtcCommon-release\\res\\raw\\ss_fly_by.wav"
     },
@@ -86,10 +82,6 @@
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_ic_arrow_back_black_24dp.png.flat",
         "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\bf84662e09ac1ecb7131dcb0999f618c\\RobotCore-release\\res\\drawable-hdpi-v4\\ic_arrow_back_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_icon_group.xml.flat",
-        "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\layout\\notification_template_icon_group.xml"
     },
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\xml_rev_scoot.xml.flat",
@@ -250,10 +242,6 @@
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_matrices.xml.flat",
         "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\45d5c5a8f2db7cb81f7a0b5164d0142a\\FtcCommon-release\\res\\layout\\matrices.xml"
-    },
-    {
-        "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_notification_action_tombstone.xml.flat",
-        "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\layout\\notification_action_tombstone.xml"
     },
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_backbar_layout.xml.flat",
@@ -438,10 +426,6 @@
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_notification_bg_low_normal.9.png.flat",
         "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
-    },
-    {
-        "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout-v16_notification_template_custom_big.xml.flat",
-        "source": "C:\\Users\\user\\.gradle\\caches\\transforms-2\\files-2.1\\b73d0db3c489aeab8b531c92b0313ef9\\support-compat-28.0.0\\res\\layout-v16\\notification_template_custom_big.xml"
     },
     {
         "merged": "C:\\Users\\user\\Documents\\GitHub\\16596-robot-code-2020-\\TeamCode\\build\\intermediates\\res\\merged\\debug\\layout_activity_view_logs.xml.flat",
