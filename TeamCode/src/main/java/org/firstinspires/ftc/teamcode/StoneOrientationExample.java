@@ -24,6 +24,8 @@ package org.firstinspires.ftc.teamcode;
         import java.util.Arrays;
         import java.util.List;
 
+        import static org.opencv.imgproc.Imgproc.RETR_CCOMP;
+
 /*
  * This is an advanced sample showcasing detecting and determining the orientation
  * of multiple stones, switching the viewport output, and communicating the results
@@ -96,7 +98,7 @@ public class StoneOrientationExample extends LinearOpMode
         /*
          * Our working image buffers
          */
-        Mat cbMat = new Mat();
+        Mat hsvMat = new Mat();
         Mat thresholdMat = new Mat();
         Mat morphedThreshold = new Mat();
         Mat contoursOnPlainImageMat = new Mat();
@@ -104,7 +106,8 @@ public class StoneOrientationExample extends LinearOpMode
         /*
          * Threshold values
          */
-        static final int CB_CHAN_MASK_THRESHOLD = 80;
+        static final int CB_CHAN_MASK_THRESHOLD = 75;
+        static final int CR_CHAN_MASK_THRESHOLD = 225;
         static final double DENSITY_UPRIGHT_THRESHOLD = 0.03;
 
         /*
@@ -124,6 +127,7 @@ public class StoneOrientationExample extends LinearOpMode
 
         static final int CONTOUR_LINE_THICKNESS = 2;
         static final int CB_CHAN_IDX = 2;
+        static final int CR_CHAN_IDX = 1;
 
         static class AnalyzedStone
         {
@@ -198,7 +202,7 @@ public class StoneOrientationExample extends LinearOpMode
             {
                 case Cb:
                 {
-                    return cbMat;
+                    return hsvMat;
                 }
 
                 case FINAL:
@@ -233,24 +237,58 @@ public class StoneOrientationExample extends LinearOpMode
         ArrayList<MatOfPoint> findContours(Mat input)
         {
             // A list we'll be using to store the contours we find
-            ArrayList<MatOfPoint> contoursList = new ArrayList<>();
+            ArrayList<MatOfPoint> contours = new ArrayList<>();
 
+            Mat blurredImage = new Mat();
+            Mat hsvImage = new Mat();
+            Mat mask = new Mat();
+            Mat morphOutput = new Mat();
+            Mat hierarchy = new Mat();
+            Mat maskedImage = new Mat();
+            int HUETARGET = 105;
+            int HUESTART = HUETARGET - 7;
+            int HUESTOP = HUETARGET + 7;
+            int SATURATIONSTART = 160;
+            int SATURATIONSTOP = 255;
+            int VALUESTART = 100;
+            int VALUESTOP = 255;
+            // remember: H ranges 0-180, S and V range 0-255
+            Scalar minValues = new Scalar(HUESTART, SATURATIONSTART, VALUESTART);
+            Scalar maxValues = new Scalar(HUESTOP, SATURATIONSTOP, VALUESTOP);
+
+// remove some noise
+            Imgproc.blur(input, blurredImage, new Size(7, 7));
             // Convert the input image to YCrCb color space, then extract the Cb channel
-            Imgproc.cvtColor(input, cbMat, Imgproc.COLOR_RGB2YCrCb);
-            Core.extractChannel(cbMat, cbMat, CB_CHAN_IDX);
+            Imgproc.cvtColor(blurredImage, hsvImage, Imgproc.COLOR_BGR2HSV);
+            // morphological operators
+            Core.inRange(hsvImage, minValues, maxValues, mask);
+            // dilate with large element, erode with small ones
+            Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(24, 24));
+            Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(12, 12));
 
-            // Threshold the Cb channel to form a mask, then run some noise reduction
-            Imgproc.threshold(cbMat, thresholdMat, CB_CHAN_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY_INV);
-            morphMask(thresholdMat, morphedThreshold);
+            Imgproc.erode(mask, morphOutput, erodeElement);
+            Imgproc.erode(morphOutput, morphOutput, erodeElement);
 
-            // Ok, now actually look for the contours! We only look for external contours.
-            Imgproc.findContours(morphedThreshold, contoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+            Imgproc.dilate(morphOutput, morphOutput, dilateElement);
+            Imgproc.dilate(morphOutput, morphOutput, dilateElement);
+            // find contours
+            Imgproc.findContours(morphOutput, contours, hierarchy, RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
 
-            // We do draw the contours we find, but not to the main input buffer.
-            input.copyTo(contoursOnPlainImageMat);
-            Imgproc.drawContours(contoursOnPlainImageMat, contoursList, -1, BLUE, CONTOUR_LINE_THICKNESS, 8);
+// if any contour exist...
+            if (hierarchy.size().height > 0 && hierarchy.size().width > 0)
+            {
+                // for each contour, display it in blue
+                for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0])
+                {
+                    //Imgproc.drawContours(input, contours, idx, new Scalar(250, 0, 0));
+                    Imgproc.drawContours(input, contours, -1, BLUE, CONTOUR_LINE_THICKNESS, 8);
 
-            return contoursList;
+                }
+            }
+
+
+            return contours;
+
         }
 
         void morphMask(Mat input, Mat output)
@@ -293,7 +331,6 @@ public class StoneOrientationExample extends LinearOpMode
             // We'll need a place to store the points as we split them, so we make ArrayLists
             ArrayList<Point> aboveMidline = new ArrayList<>(points.length/2);
             ArrayList<Point> belowMidline = new ArrayList<>(points.length/2);
-
 
 
 
