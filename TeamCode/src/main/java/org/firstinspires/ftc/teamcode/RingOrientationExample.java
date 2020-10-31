@@ -28,14 +28,16 @@ package org.firstinspires.ftc.teamcode;
 
 /*
  * This is an advanced sample showcasing detecting and determining the orientation
- * of multiple stones, switching the viewport output, and communicating the results
+ * of multiple rings, switching the viewport output, and communicating the results
  * of the vision processing to usercode.
  */
 @TeleOp
-public class StoneOrientationExample extends LinearOpMode
+public class RingOrientationExample extends LinearOpMode
 {
     OpenCvInternalCamera2 phoneCam;
-    StoneOrientationAnalysisPipeline pipeline;
+    RingAnalysisPipeline pipeline;
+    private final double MAXSLOPE = 1.0;
+    private final double MIDSLOPE = 0.7;
 
     @Override
     public void runOpMode()
@@ -59,7 +61,7 @@ public class StoneOrientationExample extends LinearOpMode
             {
                 phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
-                pipeline = new StoneOrientationAnalysisPipeline();
+                pipeline = new RingAnalysisPipeline();
                 phoneCam.setPipeline(pipeline);
             }
         });
@@ -68,6 +70,38 @@ public class StoneOrientationExample extends LinearOpMode
         telemetry.setMsTransmissionInterval(20);
 
         waitForStart();
+        int[] rauri = new int[5];
+        ArrayList<RingAnalysisPipeline.AnalyzedRing> rings;
+        int amountOfZero = 0;
+        int amountOfOne = 0;
+        int amountOfFour = 0;
+        for (int i = 0; i < rauri.length; i++) {
+            rings = pipeline.getDetectedRings();
+            rauri[i] = startingField(rings);
+            if (rauri[i] == 0){
+                amountOfZero++;
+            }
+            else if (rauri[i] == 1){
+                amountOfOne++;
+            }
+            else if (rauri[i] == 4){
+                amountOfFour++;
+            } else return;
+        }
+        if (amountOfZero > amountOfOne){
+            if (amountOfZero > amountOfFour){
+                telemetry.addLine("Zero");
+            }
+            else{
+                telemetry.addLine("Four");
+            }
+        }
+        else if (amountOfOne > amountOfFour){
+            telemetry.addLine("One");
+        }
+        else{
+            telemetry.addLine("Four");
+        }
 
         while (opModeIsActive())
         {
@@ -75,25 +109,26 @@ public class StoneOrientationExample extends LinearOpMode
             // we're not doing anything else
             sleep(20);
 
-            // Figure out which stones the pipeline detected, and print them to telemetry
-            ArrayList<StoneOrientationAnalysisPipeline.AnalyzedStone> stones = pipeline.getDetectedStones();
-            if(stones.isEmpty())
-            {
-                telemetry.addLine("No stones detected");
-            }
-            else
-            {
-                for(StoneOrientationAnalysisPipeline.AnalyzedStone stone : stones)
-                {
-                    telemetry.addLine(String.format("Stone: Orientation=%s, Angle=%f", stone.orientation.toString(), stone.angle));
-                }
-            }
+
 
             telemetry.update();
         }
     }
 
-    static class StoneOrientationAnalysisPipeline extends OpenCvPipeline
+    private int startingField(ArrayList<RingAnalysisPipeline.AnalyzedRing> rings) {
+        for (int i = 0; i < rings.size(); i++) {
+            if (rings.get(i).slope > MIDSLOPE && rings.get(i).slope < MAXSLOPE){
+                return 4;
+            }
+            else if (rings.get(i).slope <= MIDSLOPE){
+                return 1;
+            }
+
+        }
+        return 0;
+    }
+
+    static class RingAnalysisPipeline extends OpenCvPipeline
     {
         /*
          * Our working image buffers
@@ -109,6 +144,7 @@ public class StoneOrientationExample extends LinearOpMode
         static final int CB_CHAN_MASK_THRESHOLD = 75;
         static final int CR_CHAN_MASK_THRESHOLD = 225;
         static final double DENSITY_UPRIGHT_THRESHOLD = 0.03;
+
 
         /*
          * The elements we use for noise reduction
@@ -129,20 +165,16 @@ public class StoneOrientationExample extends LinearOpMode
         static final int CB_CHAN_IDX = 2;
         static final int CR_CHAN_IDX = 1;
 
-        static class AnalyzedStone
+        static class AnalyzedRing
         {
-            StoneOrientation orientation;
-            double angle;
+
+            double slope;
         }
 
-        enum StoneOrientation
-        {
-            UPRIGHT,
-            NOT_UPRIGHT
-        }
 
-        ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
-        volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
+
+        ArrayList<AnalyzedRing> internalRingList = new ArrayList<>();
+        volatile ArrayList<AnalyzedRing> clientRingList = new ArrayList<>();
 
         /*
          * Some stuff to handle returning our various buffers
@@ -183,7 +215,7 @@ public class StoneOrientationExample extends LinearOpMode
         public Mat processFrame(Mat input)
         {
             // We'll be updating this with new data below
-            internalStoneList.clear();
+            internalRingList.clear();
 
             /*
              * Run the image processing
@@ -193,7 +225,7 @@ public class StoneOrientationExample extends LinearOpMode
                 analyzeContour(contour, input);
             }
 
-            clientStoneList = new ArrayList<>(internalStoneList);
+            clientRingList = new ArrayList<>(internalRingList);
 
             /*
              * Decide which buffer to send to the viewport
@@ -229,9 +261,9 @@ public class StoneOrientationExample extends LinearOpMode
             return input;
         }
 
-        public ArrayList<AnalyzedStone> getDetectedStones()
+        public ArrayList<AnalyzedRing> getDetectedRings()
         {
-            return clientStoneList;
+            return clientRingList;
         }
 
         ArrayList<MatOfPoint> findContours(Mat input)
@@ -309,10 +341,12 @@ public class StoneOrientationExample extends LinearOpMode
             // Transform the contour to a different format
             Point[] points = contour.toArray();
             MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
+            AnalyzedRing contourDrawer = new AnalyzedRing();
 
             // Do a rect fit to the contour, and draw it on the screen
             RotatedRect rotatedRectFitToContour = Imgproc.minAreaRect(contour2f);
             drawRotatedRect(rotatedRectFitToContour, input);
+
 
             // The angle OpenCV gives us can be ambiguous, so look at the shape of
             // the rectangle to fix that.
@@ -324,13 +358,10 @@ public class StoneOrientationExample extends LinearOpMode
 
             // Figure out the slope of a line which would run through the middle, lengthwise
             // (Slope as in m from 'Y = mx + b')
-            double midlineSlope = Math.tan(Math.toRadians(rotRectAngle));
+            contourDrawer.slope = rotatedRectFitToContour.size.height / rotatedRectFitToContour.size.width;
 
-            // We're going to split the this contour into two regions: one region for the points
-            // which fall above the midline, and one region for the points which fall below.
-            // We'll need a place to store the points as we split them, so we make ArrayLists
-            ArrayList<Point> aboveMidline = new ArrayList<>(points.length/2);
-            ArrayList<Point> belowMidline = new ArrayList<>(points.length/2);
+
+            internalRingList.add(contourDrawer);
 
 
 
@@ -450,3 +481,34 @@ public class StoneOrientationExample extends LinearOpMode
         }
     }
 }
+/*
+Zero
+Detect zero rings
+
+Move to A = 47 inches
+Shoot while moving, maybe stop to shoot.
+Drop wobble
+Park
+
+One
+Detect one ring
+
+Move to B = 70.5 inches
+Shoot while moving, maybe stop to shoot.
+Drop wobble
+Park
+
+Four
+Detect four rings
+
+Move to C = 94 inches
+Shoot while moving, maybe stop to shoot.
+Drop wobble
+Park
+
+
+47 70.5 94
+
+
+
+ */
