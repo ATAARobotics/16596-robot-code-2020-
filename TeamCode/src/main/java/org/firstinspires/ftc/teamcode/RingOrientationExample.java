@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -31,17 +32,22 @@ package org.firstinspires.ftc.teamcode;
  * of multiple rings, switching the viewport output, and communicating the results
  * of the vision processing to usercode.
  */
-@TeleOp
+@Autonomous
 public class RingOrientationExample extends LinearOpMode
 {
     OpenCvInternalCamera2 phoneCam;
     RingAnalysisPipeline pipeline;
     private final double MAXSLOPE = 1.0;
     private final double MIDSLOPE = 0.7;
+    private RobotInterface robotui = null;
+
 
     @Override
     public void runOpMode()
     {
+        robotui = new RobotInterface(hardwareMap, telemetry);
+
+
         /**
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCv,
@@ -68,9 +74,9 @@ public class RingOrientationExample extends LinearOpMode
 
         // Tell telemetry to update faster than the default 250ms period :)
         telemetry.setMsTransmissionInterval(20);
-
         waitForStart();
-        int[] rauri = new int[5];
+
+        int[] rauri = new int[1];
         ArrayList<RingAnalysisPipeline.AnalyzedRing> rings;
         int amountOfZero = 0;
         int amountOfOne = 0;
@@ -88,6 +94,7 @@ public class RingOrientationExample extends LinearOpMode
                 amountOfFour++;
             } else return;
         }
+
         if (amountOfZero > amountOfOne){
             if (amountOfZero > amountOfFour){
                 telemetry.addLine("Zero");
@@ -103,6 +110,11 @@ public class RingOrientationExample extends LinearOpMode
             telemetry.addLine("Four");
         }
 
+        robotui.strafe(0.5, 11);
+        //shoot
+        robotui.strafe(0.5,24);
+        //drop wobble
+        robotui.drive(-0.5, -0.5, 1);
         while (opModeIsActive())
         {
             // Don't burn an insane amount of CPU cycles in this sample because
@@ -112,6 +124,15 @@ public class RingOrientationExample extends LinearOpMode
 
 
             telemetry.update();
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -126,6 +147,7 @@ public class RingOrientationExample extends LinearOpMode
 
         }
         return 0;
+
     }
 
     static class RingAnalysisPipeline extends OpenCvPipeline
@@ -479,36 +501,51 @@ public class RingOrientationExample extends LinearOpMode
                 Imgproc.line(drawOn, points[i], points[(i+1)%4], RED, 2);
             }
         }
+
+
+
     }
+
+
+
+
 }
 /*
 Zero
 Detect zero rings
 
-Move to A = 47 inches
+Move to A = 11 inches right of robot.
 Shoot while moving, maybe stop to shoot.
-Drop wobble
+Move 24 inches right of robot.
+Drop wobble once white line detected.
+Back up a centimetre so it doesn't touch the wobble
 Park
 
 One
 Detect one ring
 
-Move to B = 70.5 inches
+Move to B = 11 inches right of robot.
 Shoot while moving, maybe stop to shoot.
-Drop wobble
+Move left 11 inches
+Forward to white line
+Move right 11 inches
+Drop wobble once red line detected. (Maybe move slightly forward depending where wobble is dropped.
+Move back till detect white line
 Park
 
 Four
 Detect four rings
 
-Move to C = 94 inches
+Move to C = 11 inches right of robot
 Shoot while moving, maybe stop to shoot.
-Drop wobble
+Move 24 inches right of robot
+Drop wobble once red line is detected for the 3rd time. (Maybe move slightly forward depending where wobble is dropped.
+Move back till detect white line
 Park
 
 
-47 70.5 94
-
+Distances to square: 47 70.5 94
+Half a tile: 11
 
 
  */

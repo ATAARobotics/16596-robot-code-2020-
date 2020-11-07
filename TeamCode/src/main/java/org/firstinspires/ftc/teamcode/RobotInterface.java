@@ -35,6 +35,7 @@ public class RobotInterface {
     private DcMotor rightDrive = null;
     private DcMotor rightRearDrive = null;
     private DcMotor leftRearDrive = null;
+    public enum MOTORLIST{LEFTFRONTMOTOR, RIGHTFRONTMOTOR, LEFTREARMOTOR, RIGHTREARMOTOR};
 
 
 
@@ -334,9 +335,9 @@ public class RobotInterface {
    //     return distanceSensor.getDistance(DistanceUnit.MM);
    // }
 
-  //  public ColorSensor getColorSensor() {
-     //   return colorSensor;
-   // }
+    //public ColorSensor getColorSensor() {
+  //      return colorSensor;
+//    }
 
     public void resetEncoders() {
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -404,13 +405,13 @@ public class RobotInterface {
 
 
 
-  /*  boolean lineDetected() {
-        telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
-        telemetry.update();
-        if (colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
-        else return false;
-    }
-*/
+  //  boolean lineDetected() {
+  //      telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
+//        telemetry.update();
+    //    if (colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
+      //  else return false;
+   // }
+
     boolean isGyroCalibrated() {
         return imu.isGyroCalibrated();
     }
@@ -609,6 +610,20 @@ public class RobotInterface {
             sleep(250); //small pause at end of turn
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+    public double returnValues(MOTORLIST motor){
+        switch(motor){
+            case LEFTFRONTMOTOR:
+                return leftDrive.getCurrentPosition();
+            case RIGHTFRONTMOTOR:
+                return rightDrive.getCurrentPosition();
+            case LEFTREARMOTOR:
+                return leftRearDrive.getCurrentPosition();
+            case RIGHTREARMOTOR:
+                return rightRearDrive.getCurrentPosition();
+            default:
+                return Double.MAX_VALUE;
         }
     }
 }
