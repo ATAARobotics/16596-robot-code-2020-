@@ -57,10 +57,10 @@ public class RobotInterface {
 
 
     public static final double INCHES_PER_ROTATION = 9.42;
-    public static final double FL_TICKS_PER_INCH = 443.0 / INCHES_PER_ROTATION;
-    public static final double FR_TICKS_PER_INCH = 453.0 / INCHES_PER_ROTATION;
-    public static final double BL_TICKS_PER_INCH = 435.0 / INCHES_PER_ROTATION;
-    public static final double BR_TICKS_PER_INCH = 456.0 / INCHES_PER_ROTATION;
+    public static final double FL_TICKS_PER_INCH = 286.0 / INCHES_PER_ROTATION; //286
+    public static final double FR_TICKS_PER_INCH = 294.0 / INCHES_PER_ROTATION; //294
+    public static final double BL_TICKS_PER_INCH = 296.0 / INCHES_PER_ROTATION; //296
+    public static final double BR_TICKS_PER_INCH = 300.0 / INCHES_PER_ROTATION; //300
     public static final double WHEEL_BASE_CIRCUMFERENCE = 3.13 * 2.25;
 
     private final int RED_MAXIMUM = 750;
@@ -68,7 +68,7 @@ public class RobotInterface {
 
 
     private final double FL_DRIVE_MODIFIER = 0.939;
-    private final double FR_DRIVE_MODIFIER = 0.953;
+    private final double FR_DRIVE_MODIFIER = 1.0; //0.953
     private final double RR_DRIVE_MODIFIER = 0.965;
     private final double RL_DRIVE_MODIFIER = 1.0;
     private final int LINE_RED = 220;
@@ -453,7 +453,7 @@ public class RobotInterface {
      * @return Power adjustment, + is adjust left - is adjust right.
      */
     private double checkDirection() {
-    return checkDirection(0.1);
+    return checkDirection(0.01);
 
     }
         private double checkDirection(double gain) {
@@ -507,7 +507,7 @@ public class RobotInterface {
 
         // Get current facing from the gyro
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double speed=.5;
+        double speed=.2;
 
         // the desired amount to turn by
         double oldDegreesLeft=turnAngle;

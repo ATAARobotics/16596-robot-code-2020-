@@ -30,7 +30,7 @@ public class UltimateGoalBot extends LinearOpMode {
             double drive = -1.0 * gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             double strafe = -1.0 * gamepad1.left_stick_x;
-            leftPower = Range.clip(     drive + turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
+            leftPower = Range.clip(drive + turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             rightPower = Range.clip(drive - turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             leftRearPower = Range.clip(drive + turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             rightRearPower = Range.clip(drive - turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
