@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
     @Autonomous
-    public class EncoderCheck extends LinearOpMode{
+        public class EncoderCheck extends LinearOpMode{
         private RobotInterface robotui = null;
 
         @Override
         public void runOpMode() {
-            robotui = new RobotInterface(hardwareMap, telemetry);
+            robotui = new RobotInterface(hardwareMap, telemetry, false, false, false);
 
 
 

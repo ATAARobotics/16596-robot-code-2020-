@@ -10,9 +10,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class UltimateGoalBot extends LinearOpMode {
     private RobotInterface robotui = null;
 
+    private boolean armSwitch = true;
+    private boolean clawSwitch = true;
+    private boolean extenderSwitch = true;
+
     @Override
     public void runOpMode() throws InterruptedException {
-        robotui = new RobotInterface(hardwareMap, telemetry);
+        boolean previousB = false;
+        boolean previousX = false;
+        boolean previousLeftBumper = false;
+        boolean previousRightBumper = false;
+        robotui = new RobotInterface(hardwareMap, telemetry, armSwitch, clawSwitch, extenderSwitch);
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -34,6 +42,29 @@ public class UltimateGoalBot extends LinearOpMode {
             rightPower = Range.clip(drive - turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             leftRearPower = Range.clip(drive + turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             rightRearPower = Range.clip(drive - turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
+
+            if (armSwitch) {
+                if (gamepad2.a) {
+                    robotui.liftArm();
+                } else if (gamepad2.y) {
+                    robotui.lowerArm();
+                } else robotui.stopArm();
+            }
+
+            if (extenderSwitch) {
+                if (gamepad2.b) { //left_bumper
+                    robotui.retractArm();
+                } else if (gamepad2.x) {
+                    robotui.extendArm();
+                } else robotui.stopExtender();
+            }
+
+            if (clawSwitch) {
+                if (!gamepad1.b && previousB) {
+                    robotui.openClaw();
+                }
+                previousB = gamepad1.b;
+            }
 
             // Send calculated power to wheels
             robotui.drive(leftPower, rightPower, leftRearPower, rightRearPower);

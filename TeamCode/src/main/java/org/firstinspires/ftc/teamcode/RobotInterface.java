@@ -21,6 +21,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
+import java.util.ArrayList;
+
 import OldCode2020.Odometry.OdometryGlobalCoordinatePosition;
 
 import static java.lang.Thread.sleep;
@@ -29,13 +31,19 @@ public class RobotInterface {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-
+    private boolean armSwitch = false;
+    private boolean clawSwitch = false;
+    private boolean extenderSwitch = false;
 
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor rightRearDrive = null;
     private DcMotor leftRearDrive = null;
     public enum MOTORLIST{LEFTFRONTMOTOR, RIGHTFRONTMOTOR, LEFTREARMOTOR, RIGHTREARMOTOR};
+
+    private DcMotorSimple armDrive = null;
+    private Servo armExtender = null;
+    private Servo claw = null;
 
 
 
@@ -50,6 +58,24 @@ public class RobotInterface {
     private double turboSpeed = 0.8;
     private double slowSpeed = 0.25;
     private double maxStrafeSpeed = 0.4;
+    private double maxArmPower = 0.75;//0.262
+    private double maxExtenderPower = 1.0;
+    private double maxClawPower = 0.3;
+
+    public final int MAX_ARM_POSITION = 80;
+    public final int MIN_ARM_POSITION = 50;
+    public final int BRIDGE_ARM_POSITION = 65;
+    public final int BLOCK_ARM_POSITION = 68;
+
+    private double autoMaxExtender = 0.4;
+    private double maxExtender = 1.0;
+    private double minExtender = 0.0;
+
+    private double clawClosed = 1.0;
+    private double clawOpen = 0.0;
+    private boolean clawIsOpen = false;
+    private final double MAXSLOPE = 1.0;
+    private final double MIDSLOPE = 0.7;
 
 
     private boolean turboIsDeployed = false;
@@ -67,9 +93,9 @@ public class RobotInterface {
     private final int GREEN_MAXIMUM = 1000;
 
 
-    private final double FL_DRIVE_MODIFIER = 0.939;
-    private final double FR_DRIVE_MODIFIER = 1.0; //0.953
-    private final double RR_DRIVE_MODIFIER = 0.965;
+    private final double FL_DRIVE_MODIFIER = 0.95; //0.939
+    private final double FR_DRIVE_MODIFIER = 0.93; //0.953
+    private final double RR_DRIVE_MODIFIER = 0.93; //0.965
     private final double RL_DRIVE_MODIFIER = 1.0;
     private final int LINE_RED = 220;
     private final int LINE_BLUE = 220;
@@ -77,7 +103,7 @@ public class RobotInterface {
     OdometryGlobalCoordinatePosition globalPositionUpdate;
     private double referenceAngle = 0.0;
 
- //   private Telemetry telemetry = null;
+    private Telemetry telemetry = null;
     private double DRIVE_ENCODER_ERROR = (FL_TICKS_PER_INCH + FR_TICKS_PER_INCH + BL_TICKS_PER_INCH + BR_TICKS_PER_INCH) / 8.0;
     public static final double ENCODER_TARGET_RATIO = 2.0 / 3.0;
 
@@ -89,7 +115,36 @@ public class RobotInterface {
         return maxStrafeSpeed;
     }
 
-    RobotInterface(HardwareMap hardwareMap, Telemetry telemetry) {
+    public double getMaxArmPower() {
+        return maxArmPower;
+    }
+
+    public double getCurrentArmPower() {
+        return armDrive.getPower();
+    }
+
+    public double getMaxExtenderPower() {
+        return maxExtenderPower;
+    }
+
+    public double getMaxClawPower() {
+        return maxClawPower;
+    }
+
+    public boolean isClawIsOpen() {
+        return clawIsOpen;
+    }
+
+    public double getExtenderPosition() {
+        return armExtender.getPosition();
+    }
+
+
+    RobotInterface(HardwareMap hardwareMap, Telemetry telemetry, boolean armSwitch, boolean clawSwitch, boolean extenderSwitch) {
+        this.armSwitch = armSwitch;
+        this.clawSwitch = clawSwitch;
+        this.extenderSwitch = extenderSwitch;
+        this.telemetry = telemetry;
 
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -100,6 +155,13 @@ public class RobotInterface {
         leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_drive");
         rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
 
+        if (armSwitch) {
+            armDrive = hardwareMap.get(DcMotorSimple.class, "lift");
+        }
+        if (extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");
+        if (clawSwitch) {
+            claw = hardwareMap.get(Servo.class, "claw");
+        }
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -108,6 +170,11 @@ public class RobotInterface {
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
         rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        if (armSwitch) {
+            armDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            armDrive.setPower(0.0);
+        }
 
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -128,6 +195,7 @@ public class RobotInterface {
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
+        if (clawSwitch) claw.setPosition(clawClosed);
         referenceAngle = getAngle();
     }
 
@@ -272,9 +340,9 @@ public class RobotInterface {
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             correction = checkDirection();
             if (frontSpeed < 0.0) correction *= -1.0;
-            leftDrive.setPower((frontSpeed - correction) * FL_DRIVE_MODIFIER);
+            leftDrive.setPower((frontSpeed - correction)*-1 * FL_DRIVE_MODIFIER);
             rightRearDrive.setPower((rearSpeed + correction) * RR_DRIVE_MODIFIER);
-            leftRearDrive.setPower((rearSpeed + correction) * RL_DRIVE_MODIFIER);
+            leftRearDrive.setPower((rearSpeed + correction) *-1* RL_DRIVE_MODIFIER);
             rightDrive.setPower((frontSpeed - correction) * FR_DRIVE_MODIFIER);
 
            /*/ telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
@@ -304,6 +372,51 @@ public class RobotInterface {
         }
     }
 
+    public void extendArm() throws InterruptedException {
+        extendArm(false);
+    }
+
+    public void retractArm(boolean wait) throws InterruptedException {
+        if (extenderSwitch) {
+            armExtender.setPosition(maxExtender);
+            while (wait && armExtender.getPosition() < autoMaxExtender) {
+                sleep(500);
+            }
+            if (wait) armExtender.setPosition(armExtender.getPosition());
+        }
+    }
+
+    public void retractArm() throws InterruptedException {
+        retractArm(false);
+    }
+
+    public void extendArm(boolean wait) throws InterruptedException {
+        if (extenderSwitch) {
+            armExtender.setPosition(minExtender);
+            while (wait && armExtender.getPosition() > minExtender) {
+                sleep(500);
+            }
+            if (wait) armExtender.setPosition(armExtender.getPosition());
+        }
+    }
+
+    public void stopExtender() {
+        if (extenderSwitch) {
+            armExtender.setPosition(0.5);
+        }
+    }
+
+    public void openClaw() {
+        if (clawSwitch) {
+            clawIsOpen = !clawIsOpen;
+            if (clawIsOpen) {
+                claw.setPosition(clawOpen);
+            } else {
+                claw.setPosition(clawClosed);
+            }
+        }
+    }
+
 
 
     public void turbo() {
@@ -323,12 +436,62 @@ public class RobotInterface {
         }
     }
 
+    public void liftArm() throws InterruptedException {
+        liftArm(false);
+    }
+
+    public void liftArm(boolean wait) throws InterruptedException {
+        if (armSwitch) {
+            //if (getCurrentArmPosition() > MIN_ARM_POSITION) {
+                armDrive.setPower(maxArmPower);
+               // while (wait && getCurrentArmPosition() > BRIDGE_ARM_POSITION) {
+               //     sleep(500);
+                }
+            //    if (wait) stopArm();
+          //  } else {
+          //      stopArm();
+           // }
+        }
+   // }
+
+    public void lowerArm() throws InterruptedException {
+        lowerArm(0);
+    }
+
+    public void lowerArm(int targetPosition) throws InterruptedException {
+        if (armSwitch) {
+           // if (getCurrentArmPosition() < MAX_ARM_POSITION) {
+                armDrive.setPower(-maxArmPower);
+              //  while (targetPosition == 1 && getCurrentArmPosition() < BRIDGE_ARM_POSITION) {
+            //        sleep(500);
+                }
+             //   while (targetPosition == 2 && getCurrentArmPosition() < BLOCK_ARM_POSITION) {
+            //        sleep(500);
+             //   }
+            //    if (targetPosition > 0) stopArm();
+          //  } else {
+          //      stopArm();
+//        }
+    }
+
+    public void stopArm() {
+        if (armSwitch) {
+            armDrive.setPower(0.0);
+        }
+    }
+
 
     private boolean AtTargetPosition(DcMotor drive) {
         if ((Math.abs(drive.getCurrentPosition()) > Math.abs(drive.getTargetPosition()) + DRIVE_ENCODER_ERROR))
             return true;
         return false;
     }
+
+   // public int getCurrentArmPosition() {
+  //      double maxResult = armPotentiometer.getMaxVoltage();
+  //      double result = armPotentiometer.getVoltage();
+  //      return (int) (100 * result / maxResult);
+  //  }
 
 
    // public double getDistance() {
@@ -403,9 +566,12 @@ public class RobotInterface {
         telemetry.update(); /*/
     }
 
+    double getClawPosition() {
+        return claw.getPosition();
+    }
 
 
-  //  boolean lineDetected() {
+    //  boolean lineDetected() {
   //      telemetry.addData("RED", "Seen %d   Target %d", colorSensor.red(), LINE_RED);
 //        telemetry.update();
     //    if (colorSensor.red() > LINE_RED || colorSensor.blue() > LINE_BLUE) return true;
@@ -453,7 +619,7 @@ public class RobotInterface {
      * @return Power adjustment, + is adjust left - is adjust right.
      */
     private double checkDirection() {
-    return checkDirection(0.01);
+    return checkDirection(0.01);//0.01
 
     }
         private double checkDirection(double gain) {
@@ -625,5 +791,19 @@ public class RobotInterface {
             default:
                 return Double.MAX_VALUE;
         }
+    }
+    public int startingField(ArrayList<RingOrientationExample.RingAnalysisPipeline.AnalyzedRing> rings) {
+        for (int i = 0; i < rings.size(); i++) {
+            telemetry.addData("Slope", rings.get(i).slope);
+            if (rings.get(i).slope > MIDSLOPE && rings.get(i).slope < MAXSLOPE){
+                return 4;
+            }
+            else if (rings.get(i).slope <= MIDSLOPE){
+                return 1;
+            }
+
+        }
+        return 0;
+
     }
 }

@@ -167,7 +167,7 @@ public class RobotInterface {
         rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
 
         if (armSwitch) {
-            armPotentiometer = hardwareMap.get(AnalogInput.class, "poteniometer");
+      //      armPotentiometer = hardwareMap.get(AnalogInput.class, "poteniometer");
             armDrive = hardwareMap.get(DcMotorSimple.class, "lift");
         }
         if (extenderSwitch) armExtender = hardwareMap.get(Servo.class, "extender");

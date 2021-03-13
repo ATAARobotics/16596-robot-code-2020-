@@ -45,7 +45,7 @@ public class RingOrientationExample extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        robotui = new RobotInterface(hardwareMap, telemetry);
+        robotui = new RobotInterface(hardwareMap, telemetry, false, false, false);
 
 
         /**
@@ -73,7 +73,7 @@ public class RingOrientationExample extends LinearOpMode
         });
 
         // Tell telemetry to update faster than the default 250ms period :)
-        telemetry.setMsTransmissionInterval(20);
+     //   telemetry.setMsTransmissionInterval(20);
         waitForStart();
 
         int[] rauri = new int[1];
@@ -92,7 +92,7 @@ public class RingOrientationExample extends LinearOpMode
             }
             else if (rauri[i] == 4){
                 amountOfFour++;
-            } else return;
+            } else continue;
         }
 
         if (amountOfZero > amountOfOne){
@@ -110,11 +110,7 @@ public class RingOrientationExample extends LinearOpMode
             telemetry.addLine("Four");
         }
 
-        robotui.strafe(0.5, 11);
-        //shoot
-        robotui.strafe(0.5,24);
-        //drop wobble
-        robotui.drive(-0.5, -0.5, 1);
+
         while (opModeIsActive())
         {
             // Don't burn an insane amount of CPU cycles in this sample because
@@ -138,6 +134,7 @@ public class RingOrientationExample extends LinearOpMode
 
     private int startingField(ArrayList<RingAnalysisPipeline.AnalyzedRing> rings) {
         for (int i = 0; i < rings.size(); i++) {
+            telemetry.addLine(Double.toString(rings.get(i).slope));
             if (rings.get(i).slope > MIDSLOPE && rings.get(i).slope < MAXSLOPE){
                 return 4;
             }
