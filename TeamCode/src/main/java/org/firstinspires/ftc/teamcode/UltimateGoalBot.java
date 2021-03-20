@@ -20,6 +20,7 @@ public class UltimateGoalBot extends LinearOpMode {
         boolean previousX = false;
         boolean previousLeftBumper = false;
         boolean previousRightBumper = false;
+        boolean extendy = false;
         robotui = new RobotInterface(hardwareMap, telemetry, armSwitch, clawSwitch, extenderSwitch);
 
 
@@ -38,33 +39,41 @@ public class UltimateGoalBot extends LinearOpMode {
             double drive = -1.0 * gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             double strafe = -1.0 * gamepad1.left_stick_x;
-            leftPower = Range.clip(drive + turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
+            leftPower = Range.clip(drive + turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             rightPower = Range.clip(drive - turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
-            leftRearPower = Range.clip(drive + turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
+            leftRearPower = Range.clip(drive + turn + strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
             rightRearPower = Range.clip(drive - turn - strafe, -1.0 * robotui.getMaxDriveSpeed(), robotui.getMaxDriveSpeed());
 
             if (armSwitch) {
-                if (gamepad2.a) {
+                if (gamepad2.left_bumper) {
                     robotui.liftArm();
-                } else if (gamepad2.y) {
+                } else if (gamepad2.right_bumper) {
                     robotui.lowerArm();
                 } else robotui.stopArm();
             }
 
             if (extenderSwitch) {
-                if (gamepad2.b) { //left_bumper
-                    robotui.retractArm();
-                } else if (gamepad2.x) {
+                if (gamepad2.x) { //left_bumper
+                  //  robotui.retractArm();
+                //} else if (gamepad2.x) {
                     robotui.extendArm();
-                } else robotui.stopExtender();
+                } //else robotui.stopExtender();
             }
 
             if (clawSwitch) {
-                if (!gamepad1.b && previousB) {
+                if (!gamepad2.b && previousB) {
                     robotui.openClaw();
                 }
-                previousB = gamepad1.b;
+                previousB = gamepad2.b;
             }
+            if (gamepad1.left_bumper && previousLeftBumper) {
+                robotui.slow();
+            }
+            previousLeftBumper = gamepad1.left_bumper;
+            if (gamepad1.right_bumper && previousRightBumper) {
+                robotui.turbo();
+            }
+            previousRightBumper = gamepad1.right_bumper;
 
             // Send calculated power to wheels
             robotui.drive(leftPower, rightPower, leftRearPower, rightRearPower);

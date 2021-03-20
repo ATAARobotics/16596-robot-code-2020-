@@ -53,12 +53,12 @@ public class RobotInterface {
     private double globalAngle;
     private double correction;
 
-    private double maxDriveSpeed = 1.0;
-    private double normalSpeed = 1.0;
+    private double maxDriveSpeed = 0.5;
+    private double normalSpeed = 0.5;
     private double turboSpeed = 0.8;
     private double slowSpeed = 0.25;
     private double maxStrafeSpeed = 0.4;
-    private double maxArmPower = 0.75;//0.262
+    private double maxArmPower = 0.5;//0.262
     private double maxExtenderPower = 1.0;
     private double maxClawPower = 0.3;
 
@@ -68,12 +68,15 @@ public class RobotInterface {
     public final int BLOCK_ARM_POSITION = 68;
 
     private double autoMaxExtender = 0.4;
-    private double maxExtender = 1.0;
+    private double maxExtender = 0.8;
     private double minExtender = 0.0;
+    private boolean extenderIsOpen = true;
+
+
 
     private double clawClosed = 1.0;
     private double clawOpen = 0.0;
-    private boolean clawIsOpen = false;
+    private boolean clawIsOpen = true;
     private final double MAXSLOPE = 1.0;
     private final double MIDSLOPE = 0.7;
 
@@ -195,7 +198,8 @@ public class RobotInterface {
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
-        if (clawSwitch) claw.setPosition(clawClosed);
+        if (clawSwitch) claw.setPosition(clawOpen);
+        if (extenderSwitch) armExtender.setPosition(maxExtender);
         referenceAngle = getAngle();
     }
 
@@ -309,6 +313,7 @@ public class RobotInterface {
 
     public void strafe(double frontSpeed, double distance) {
         strafe(frontSpeed,distance,false);
+
     }
 
     public void strafe(double frontSpeed, double distance, boolean checkForLine) {
@@ -328,9 +333,9 @@ public class RobotInterface {
         rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftDrive.setPower(frontSpeed * FL_DRIVE_MODIFIER);
-        rightRearDrive.setPower(rearSpeed * RR_DRIVE_MODIFIER);
+        rightRearDrive.setPower(frontSpeed * RR_DRIVE_MODIFIER);
         leftRearDrive.setPower(rearSpeed * RL_DRIVE_MODIFIER);
-        rightDrive.setPower(frontSpeed * FR_DRIVE_MODIFIER);
+        rightDrive.setPower(rearSpeed * FR_DRIVE_MODIFIER);
 
         rightRearDrive.setTargetPosition((int) (distance * BR_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
         leftDrive.setTargetPosition((int) (distance * FL_TICKS_PER_INCH * ENCODER_TARGET_RATIO));
@@ -340,10 +345,10 @@ public class RobotInterface {
         while (!AtTargetPosition(leftDrive) && !AtTargetPosition(rightRearDrive)) {
             correction = checkDirection();
             if (frontSpeed < 0.0) correction *= -1.0;
-            leftDrive.setPower((frontSpeed - correction)*-1 * FL_DRIVE_MODIFIER);
-            rightRearDrive.setPower((rearSpeed + correction) * RR_DRIVE_MODIFIER);
-            leftRearDrive.setPower((rearSpeed + correction) *-1* RL_DRIVE_MODIFIER);
-            rightDrive.setPower((frontSpeed - correction) * FR_DRIVE_MODIFIER);
+            leftDrive.setPower((frontSpeed + correction)* FL_DRIVE_MODIFIER);
+            rightRearDrive.setPower((frontSpeed + correction) * RR_DRIVE_MODIFIER);
+            leftRearDrive.setPower((rearSpeed - correction) * RL_DRIVE_MODIFIER);
+            rightDrive.setPower((rearSpeed - correction) * FR_DRIVE_MODIFIER);
 
            /*/ telemetry.addData("IMU", "imu heading: %.2f", lastAngles.firstAngle);
 //            telemetry.addData("1 imu heading", lastAngles.firstAngle);
@@ -392,11 +397,17 @@ public class RobotInterface {
 
     public void extendArm(boolean wait) throws InterruptedException {
         if (extenderSwitch) {
-            armExtender.setPosition(minExtender);
+            /*armExtender.setPosition(minExtender);
             while (wait && armExtender.getPosition() > minExtender) {
                 sleep(500);
             }
-            if (wait) armExtender.setPosition(armExtender.getPosition());
+            if (wait) armExtender.setPosition(armExtender.getPosition()); */
+             extenderIsOpen = !extenderIsOpen;
+            if (extenderIsOpen) {
+                armExtender.setPosition(maxExtender);
+            } else {
+                armExtender.setPosition(minExtender);
+            }
         }
     }
 
