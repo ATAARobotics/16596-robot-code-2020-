@@ -101,6 +101,10 @@ public class voodooAuto extends LinearOpMode {
             if (amountOfZero > amountOfFour){
                 telemetry.addLine("Zero");
                 telemetry.update();
+                robotui.drive(0.2, 0.2, 10);
+                robotui.strafe(0.5, 20);
+                robotui.drive(0.2, 0.2, 70);
+                robotui.openClaw();
 
             }
             else{
@@ -117,6 +121,10 @@ public class voodooAuto extends LinearOpMode {
         else if (amountOfOne > amountOfFour){
             telemetry.addLine("One");
             telemetry.update();
+            robotui.drive(0.2, 0.2, 100);
+            robotui.openClaw();
+            robotui.drive(0.2, 0.2, -35);
+
 
         }
         else{
