@@ -58,7 +58,7 @@ public class RobotInterface {
     private double turboSpeed = 0.8;
     private double slowSpeed = 0.25;
     private double maxStrafeSpeed = 0.4;
-    private double maxArmPower = 0.5;//0.262
+    private double maxArmPower = 0.75;//0.262
     private double maxExtenderPower = 1.0;
     private double maxClawPower = 0.3;
 
@@ -68,7 +68,7 @@ public class RobotInterface {
     public final int BLOCK_ARM_POSITION = 68;
 
     private double autoMaxExtender = 0.4;
-    private double maxExtender = 0.8;
+    private double maxExtender = 0.4;
     private double minExtender = 0.0;
     private boolean extenderIsOpen = true;
 
