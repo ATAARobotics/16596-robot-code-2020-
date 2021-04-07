@@ -77,7 +77,7 @@ public class RobotInterface {
     private double clawClosed = 1.0;
     private double clawOpen = 0.0;
     private boolean clawIsOpen = true;
-    private final double MAXSLOPE = 1.0;
+    private final double MAXSLOPE = 0.95;
     private final double MIDSLOPE = 0.7;
 
 
@@ -806,11 +806,11 @@ public class RobotInterface {
     public int startingField(ArrayList<RingOrientationExample.RingAnalysisPipeline.AnalyzedRing> rings) {
         for (int i = 0; i < rings.size(); i++) {
             telemetry.addData("Slope", rings.get(i).slope);
-            if (rings.get(i).slope > MIDSLOPE && rings.get(i).slope < MAXSLOPE){
-                return 4;
-            }
-            else if (rings.get(i).slope <= MIDSLOPE){
+            if (rings.get(i).slope > MAXSLOPE){
                 return 1;
+            }
+            else if (rings.get(i).slope > MIDSLOPE){
+                return 4;
             }
 
         }

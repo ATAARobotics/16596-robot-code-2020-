@@ -34,8 +34,6 @@ public class voodooAuto extends LinearOpMode {
     // Declare OpMode members.
     OpenCvInternalCamera2 phoneCam;
     RingAnalysisPipeline pipeline;
-    private final double MAXSLOPE = 1.0;
-    private final double MIDSLOPE = 0.7;
     private ElapsedTime runtime = new ElapsedTime();
     private RobotInterface robotui = null;
 
@@ -63,14 +61,21 @@ public class voodooAuto extends LinearOpMode {
         while (!isStopRequested() && !robotui.isGyroCalibrated()) {
             sleep(50);
             idle();
-            telemetry.addData("Mode", "e for start");
-            telemetry.update();
-
         }
 
-        telemetry.addData("Mode", "arg for start");
-        telemetry.update();
 
+
+
+//okay!?~@$#
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", robotui.getCalibrationStatus());
+        //telemetry.update();
+
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
         int[] rauri = new int[1];
         ArrayList<RingOrientationExample.RingAnalysisPipeline.AnalyzedRing> rings;
         int amountOfZero = 0;
@@ -94,16 +99,6 @@ public class voodooAuto extends LinearOpMode {
             }
             telemetry.update();
         }
-//okay!?~@$#
-
-        telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", robotui.getCalibrationStatus());
-        //telemetry.update();
-
-
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        runtime.reset();
 
         if (amountOfZero > amountOfOne) {
             if (amountOfZero > amountOfFour) {
@@ -111,7 +106,7 @@ public class voodooAuto extends LinearOpMode {
                 telemetry.update();
                 robotui.drive(0.2, 0.2, 10);
                 robotui.strafe(0.5, 20);
-                robotui.drive(0.2, 0.2, 70);
+                robotui.drive(0.2, 0.2, 90);
                 robotui.openClaw();
 
             } else {
@@ -120,6 +115,7 @@ public class voodooAuto extends LinearOpMode {
                 robotui.drive(0.2, 0.2, 10);
                 robotui.strafe(0.2, 48);
                 robotui.drive(0.2, 0.2, 150);
+                robotui.openClaw();
                 robotui.drive(0.2, 0.2, -50);
                 telemetry.addLine("Four");
 
@@ -127,9 +123,9 @@ public class voodooAuto extends LinearOpMode {
         } else if (amountOfOne > amountOfFour) {
             telemetry.addLine("One");
             telemetry.update();
-            robotui.drive(0.2, 0.2, 100);
+            robotui.drive(0.2, 0.2, 120);
             robotui.openClaw();
-            robotui.drive(0.2, 0.2, -35);
+            robotui.drive(0.2, 0.2, -15);
 
 
         } else {
@@ -138,14 +134,15 @@ public class voodooAuto extends LinearOpMode {
             robotui.drive(0.2, 0.2, 10);
             robotui.strafe(0.2, 48);
             robotui.drive(0.2, 0.2, 150);
+            robotui.openClaw();
             robotui.drive(0.2, 0.2, -50);
 
         }
-        robotui.drive(0.2, 0.2, 10);
-        robotui.strafe(0.5, 20);
-        robotui.drive(0.2, 0.2, 140);
-        robotui.openClaw();
-        robotui.drive(0.2, 0.2, -45);
+        //robotui.drive(0.2, 0.2, 10);
+        //robotui.strafe(0.5, 20);
+        //robotui.drive(0.2, 0.2, 140);
+        //robotui.openClaw();
+        //robotui.drive(0.2, 0.2, -45);
 
 
         // turn to the bridge
@@ -161,22 +158,6 @@ public class voodooAuto extends LinearOpMode {
         }
 
     }
-
-
-    private int startingField(ArrayList<RingOrientationExample.RingAnalysisPipeline.AnalyzedRing> rings) {
-        for (int i = 0; i < rings.size(); i++) {
-            telemetry.addLine(Double.toString(rings.get(i).slope));
-            if (rings.get(i).slope > MIDSLOPE && rings.get(i).slope < MAXSLOPE) {
-                return 4;
-            } else if (rings.get(i).slope <= MIDSLOPE) {
-                return 1;
-            }
-
-        }
-        return 0;
-
-    }
-
 
     static class RingAnalysisPipeline extends OpenCvPipeline {
         /*
@@ -311,12 +292,12 @@ public class voodooAuto extends LinearOpMode {
             Mat morphOutput = new Mat();
             Mat hierarchy = new Mat();
             Mat maskedImage = new Mat();
-            int HUETARGET = 105;
-            int HUESTART = HUETARGET - 7;
-            int HUESTOP = HUETARGET + 7;
-            int SATURATIONSTART = 160;
+            int HUETARGET = 105;//105
+            int HUESTART = HUETARGET - 15;
+            int HUESTOP = HUETARGET + 15;
+            int SATURATIONSTART = 50;
             int SATURATIONSTOP = 255;
-            int VALUESTART = 100;
+            int VALUESTART = 50;
             int VALUESTOP = 255;
             // remember: H ranges 0-180, S and V range 0-255
             Scalar minValues = new Scalar(HUESTART, SATURATIONSTART, VALUESTART);
